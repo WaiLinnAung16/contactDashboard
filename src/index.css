@@ -13,3 +13,17 @@ html {
 .active:hover {
   @apply text-blue-700 bg-blue-200/40 w-[280px] rounded-r-full;
 }
+
+.hidden-tag {
+  @apply text-[10px] cursor-pointer bg-gray-600 text-gray-100 px-2 py-1 rounded-sm mt-1;
+}
+
+.btn {
+  @apply px-5 py-2 text-white bg-blue-500 rounded-md text-sm font-medium hover:bg-blue-700 hover:shadow-md;
+}
+
+.btn:disabled {
+  background-color: rgb(225, 225, 225);
+  color: rgb(183, 179, 179);
+  box-shadow: none;
+}

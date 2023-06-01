@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useRegisterMutation } from "../redux/api/contactApi";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -8,6 +9,10 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [password_confirmation, setPasswordConfirmation] = useState("");
   const [errors, setErrors] = useState({});
+
+  const [register] = useRegisterMutation();
+
+  const nav = useNavigate();
 
   const validation = () => {
     let errorText = {};
@@ -36,15 +41,24 @@ const Register = () => {
     return isValid;
   };
 
-  const formHandler = (e) => {
-    e.preventDefault();
-    if (validation()) {
-      console.log(name, email, password);
+  const formHandler = async (e) => {
+    try {
+      e.preventDefault();
+      if (validation()) {
+        const user = { name, email, password, password_confirmation };
+        const { data } = await register(user);
+        console.log("data", data);
+        if (data?.success) {
+          nav("/login");
+        }
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
   return (
-    <div className="flex items-center justify-between h-screen px-10 py-5 my-5 md:my-0">
+    <div className="flex items-center justify-between px-10 py-5 my-5 md:my-0">
       <div className="hidden md:block w-[50%] h-auto">
         <img
           src="https://img.freepik.com/premium-vector/smiling-man-holding-smart-phone-wearing-casual-clothes-standing-showing-thumbs-up-positive-gesture-ok-sign-gesture-language-concept-illustration_270158-266.jpg?w=740"
@@ -52,10 +66,10 @@ const Register = () => {
         />
       </div>
 
-      <div className="shadow md:shadow-none px-5 py-4 w-[350px] lg:w-[40%] xl:w-[30%] mx-auto">
+      <div className="shadow md:shadow-none px-5 py-4 w-[350px] lg:w-[30%] mx-auto">
         <div className="mb-6">
-          <h1 className="font-bold text-2xl mb-3">Registration</h1>
-          <p className=" leading-tight">
+          <h1 className="font-bold text-2xl mb-4">Registration</h1>
+          <p className="text-sm leading-tight">
             Get Started with Us: Sign Up and Experience a New Level of
             Convenience!
           </p>
@@ -67,7 +81,7 @@ const Register = () => {
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="shadow block border rounded-md mt-1 px-3 py-1 w-full  focus:outline-blue-400 "
+                className="shadow block border rounded-md px-2 py-1 w-full  focus:outline-blue-400 "
                 type="text"
                 id="username"
               />
@@ -80,7 +94,7 @@ const Register = () => {
               <input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="shadow block border rounded-md mt-1 px-3 py-1 w-full  focus:outline-blue-400"
+                className="shadow block border rounded-md px-2 py-1 w-full  focus:outline-blue-400"
                 type="text"
                 id="email"
               />
@@ -93,8 +107,8 @@ const Register = () => {
               <input
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="shadow block border rounded-md mt-1 px-3 py-1 w-full  focus:outline-blue-400"
-                type="password"
+                className="shadow block border rounded-md px-2 py-1 w-full  focus:outline-blue-400"
+                type="text"
                 id="password"
               />
               <span className="text-red-500">
@@ -107,8 +121,8 @@ const Register = () => {
               <input
                 value={password_confirmation}
                 onChange={(e) => setPasswordConfirmation(e.target.value)}
-                className="shadow block border rounded-md mt-1 px-3 py-1 w-full  focus:outline-blue-400"
-                type="password"
+                className="shadow block border rounded-md px-2 py-1 w-full  focus:outline-blue-400"
+                type="text"
                 id="passwordConfirmation"
               />
               <span className="text-red-500">
@@ -120,14 +134,14 @@ const Register = () => {
 
             <button
               type="submit"
-              className="bg-blue-600 px-5 py-1 w-full text-white rounded-md mb-3"
+              className="bg-blue-600 px-5 py-1 w-full text-white rounded-md"
             >
               Sign up
             </button>
-            <div className="text-blue-400 flex justify-center text-sm gap-3 ">
+            <div className="text-blue-400 flex justify-center text-sm gap-4 mt-3">
               <p>Already have an account?</p>
               <Link to="/login">
-                <span className="cursor-pointer underline">Login here</span>
+                <span className="cursor-pointer">Login here</span>
               </Link>
             </div>
           </form>

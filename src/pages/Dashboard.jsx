@@ -12,9 +12,11 @@ const Dashboard = () => {
     <div className="flex flex-col">
       <Header toggleSidebar={toggleSidebar} />
       <div className="flex">
-        <Sidebar sideBarToggle={sideBarToggle} />
+        <Sidebar sideBarToggle={sideBarToggle} toggleSidebar={toggleSidebar} />
         <div
-          className={`m-0 p-5 ${sideBarToggle ? "lg:ml-[300px]" : " lg:ml-0"}`}
+          className={`m-0 w-full transition-all duration-300 ${
+            sideBarToggle ? "lg:ml-[310px]" : " lg:ml-0"
+          }`}
         >
           {<Outlet />}
         </div>

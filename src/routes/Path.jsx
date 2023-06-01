@@ -5,6 +5,7 @@ import Register from "../pages/Register";
 import Contacts from "../pages/Contacts";
 import Detail from "../pages/Detail";
 import Create from "../pages/Create";
+import Update from "../pages/Update";
 
 const Path = () => {
   return (
@@ -14,7 +15,8 @@ const Path = () => {
           <Route path="/" element={<Dashboard />}>
             <Route index element={<Contacts />} />
             <Route path="create" element={<Create />} />
-            <Route path="detail" element={<Detail />} />
+            <Route path="detail/:id" element={<Detail />} />
+            <Route path="update/:id" element={<Update />} />
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

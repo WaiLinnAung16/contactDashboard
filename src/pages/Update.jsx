@@ -8,38 +8,45 @@ import {
 import { FaRegAddressCard } from "react-icons/fa";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../components/Modal";
 import { useFormik } from "formik";
 import { userSchema } from "../validationschema";
-import { useCreateContactMutation } from "../redux/api/contactApi";
 import { Toaster, toast } from "react-hot-toast";
+import {
+  useGetSingleContactQuery,
+  useUpdateContactMutation,
+} from "../redux/api/contactApi";
 import ToastAlert from "../components/ToastAlert";
 
-const Create = () => {
+const Update = () => {
+  const { id } = parseInt(useParams());
   const [toggleModal, setToggleModal] = useState(false);
   const navigate = useNavigate();
-  const [createContact] = useCreateContactMutation();
+
+  const [updateContact] = useUpdateContactMutation();
+  const { data: contact } = useGetSingleContactQuery({ id });
 
   // formik
   const formik = useFormik({
     initialValues: {
-      name: "",
-      phone: "",
-      email: "",
-      address: "",
+      name: contact?.name,
+      phone: contact?.phone,
+      email: contact?.email,
+      address: contact?.address,
     },
 
     validationSchema: userSchema,
 
     onSubmit: async (values, actions) => {
-      const data = await createContact({ userData: values });
-      toast.custom(<ToastAlert title={"create user success"} />);
+      const data = await updateContact({ id, userData: values });
+      toast.custom(<ToastAlert title={"update success"} />);
       setTimeout(() => {
         actions.resetForm();
       }, 1000);
     },
   });
+
   // console.log(formik.errors);
   // console.log(formik.touched);
   return (
@@ -48,57 +55,60 @@ const Create = () => {
       {toggleModal && (
         <Modal toggleModal={toggleModal} setToggleModal={setToggleModal} />
       )}
-      <div>
-        <div className="border-b top-20 bg-white fixed w-full z-10">
-          <div className="flex flex-col w-full  md:w-[50%] p-5">
-            <div className=" flex flex-col md:flex-row items-center gap-5 md:gap-10 ">
-              <button
-                className=" self-start text-xl cursor-pointer"
-                onClick={() => navigate(-1)}
-              >
-                <RxCross2 />
-              </button>
-              <div
-                onClick={() => setToggleModal(!toggleModal)}
-                className=" p-16 bg-sky-200 rounded-full w-fit cursor-pointer"
-              >
-                <MdOutlineAddPhotoAlternate className=" text-3xl" />
-              </div>
+      <div className="w-[75%] mx-auto p-5">
+        <div className=" m-10 flex justify-between">
+          <div className=" flex items-center gap-10">
+            <button
+              className=" self-start text-xl"
+              onClick={() => navigate(-1)}
+            >
+              <RxCross2 />
+            </button>
+            <div
+              onClick={() => setToggleModal(!toggleModal)}
+              className=" p-16 bg-sky-200 rounded-full w-fit"
+            >
+              <MdOutlineAddPhotoAlternate className=" text-3xl" />
+            </div>
+            <div className=" flex flex-col items-center gap-3">
+              <h1 className=" text-2xl ">myo nyi</h1>
               <button className="hover:bg-gray-200 flex gap-3 items-center border border-gray-400 px-2 py-1 text-sm rounded-lg">
-                <span className=" text-lg text-blue-700 cursor-pointer">
+                <span className=" text-lg text-blue-700 ">
                   <AiOutlinePlus />
                 </span>
                 Label
               </button>
             </div>
-            <button
-              form="create-form"
-              type="submit"
-              className="md:self-end md:m-0 self-center mt-5 btn"
-              disabled={
-                formik.values.name ||
-                formik.values.phone ||
-                formik.values.email ||
-                formik.values.address
-                  ? false
-                  : true
-              }
-            >
-              Save
-            </button>
           </div>
+          <button
+            form="create-form"
+            type="submit"
+            className=" self-end btn"
+            disabled={
+              formik.values.name ||
+              formik.values.phone ||
+              formik.values.email ||
+              formik.values.address
+                ? false
+                : true
+            }
+          >
+            Save
+          </button>
         </div>
-
+        <hr />
         <form id="create-form" onSubmit={formik.handleSubmit}>
-          <div className=" m-10 space-y-8 mt-[400px] md:mt-[280px]">
+          <div className=" m-10 space-y-8">
             <div className=" flex items-center gap-8">
-              <AiOutlineUser className=" create-name text-xl text-gray-400 group" />
-              <div className="w-[300px] md:w-[500px]">
-                <div className="relative">
+              <div className=" flex flex-col items-center">
+                <AiOutlineUser className=" create-name text-xl text-gray-400 group" />
+              </div>
+              <div className=" flex flex-col gap-2">
+                <div className="relative w-[500px]">
                   <input
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.name}
+                    defaultValue={formik.values.name}
                     type="text"
                     id="name"
                     name="name"
@@ -106,7 +116,7 @@ const Create = () => {
                       formik.errors.name &&
                       formik.touched.name &&
                       "border-red-500 text-red-500"
-                    } block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 border-neutral-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    } block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                     placeholder=" "
                   />
                   <label
@@ -115,7 +125,7 @@ const Create = () => {
                       formik.errors.name &&
                       formik.touched.name &&
                       " text-red-500"
-                    } absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1`}
+                    } absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1`}
                   >
                     Name
                   </label>
@@ -129,12 +139,12 @@ const Create = () => {
               <div className=" flex flex-col items-center">
                 <AiOutlinePhone className=" text-xl text-gray-400" />
               </div>
-              <div className=" flex flex-col w-[300px] md:w-[500px] gap-2">
-                <div className="relative">
+              <div className=" flex flex-col gap-2">
+                <div className="relative w-[500px]">
                   <input
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.phone}
+                    defaultValue={formik.values.phone}
                     type="number"
                     id="phone"
                     name="phone"
@@ -142,7 +152,7 @@ const Create = () => {
                       formik.errors.phone &&
                       formik.touched.phone &&
                       "border-red-500 text-red-500"
-                    } block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 border-neutral-600    focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    } block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                     placeholder=" "
                   />
                   <label
@@ -151,7 +161,7 @@ const Create = () => {
                       formik.errors.phone &&
                       formik.touched.phone &&
                       " text-red-500"
-                    } absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1`}
+                    } absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1`}
                   >
                     Phone
                   </label>
@@ -165,12 +175,12 @@ const Create = () => {
               <div className=" flex flex-col items-center">
                 <AiOutlineMail className=" text-xl text-gray-500" />
               </div>
-              <div className=" flex flex-col gap-2  w-[300px] md:w-[500px]">
-                <div className="relative">
+              <div className=" flex flex-col gap-2">
+                <div className="relative w-[500px]">
                   <input
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.email}
+                    defaultValue={formik.values.email}
                     type="text"
                     id="email"
                     name="email"
@@ -178,7 +188,7 @@ const Create = () => {
                       formik.errors.email &&
                       formik.touched.email &&
                       "border-red-500 text-red-500"
-                    } block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 border-neutral-600    focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    } block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                     placeholder=" "
                   />
                   <label
@@ -187,7 +197,7 @@ const Create = () => {
                       formik.errors.email &&
                       formik.touched.email &&
                       " text-red-500"
-                    } absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1`}
+                    } absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1`}
                   >
                     Email
                   </label>
@@ -201,12 +211,12 @@ const Create = () => {
               <div className=" flex flex-col items-center">
                 <FaRegAddressCard className=" text-xl text-gray-500" />
               </div>
-              <div className="w-[300px] md:w-[500px]">
-                <div className="relative">
+              <div>
+                <div className="relative w-[500px]">
                   <input
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.address}
+                    defaultValue={formik.values.address}
                     type="text"
                     id="address"
                     name="address"
@@ -214,7 +224,7 @@ const Create = () => {
                       formik.errors.address &&
                       formik.touched.address &&
                       "border-red-500 text-red-500"
-                    } block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 border-neutral-600    focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    } block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                     placeholder=" "
                   />
                   <label
@@ -223,7 +233,7 @@ const Create = () => {
                       formik.errors.address &&
                       formik.touched.address &&
                       " text-red-500"
-                    } absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1`}
+                    } absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1`}
                   >
                     Address
                   </label>
@@ -242,4 +252,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default Update;

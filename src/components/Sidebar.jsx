@@ -1,40 +1,55 @@
-import React from "react";
-import { Link, NavLink } from "react-router-dom";
 import { AiOutlinePlus } from "react-icons/ai";
 import { RiContactsLine } from "react-icons/ri";
-const Sidebar = ({ sideBarToggle }) => {
+import { RxCross2 } from "react-icons/rx";
+import logo from "../assets/contacts-logo.png";
+import { Link, NavLink } from "react-router-dom";
+
+const Sidebar = ({ sideBarToggle, toggleSidebar }) => {
   return (
-    <div
-      className={`w-[300px] min-h-screen shadow fixed text-slate-900 -translate-x-[100%] transition-all duration-300  ${
-        sideBarToggle ? "lg:translate-x-0" : "lg:-translate-x-[100%]"
-      }`}
-    >
-      <ul className="flex flex-col mt-4">
-        <Link to={"/create"}>
-          <div className=" w-fit px-6 py-3 mb-5 ml-5 rounded-full flex items-center gap-4 bg-white text-black font-semibold shadow border border-gray-200 transition-all hover:bg-blue-200/40 hover:text-blue-600 hover:shadow-xl">
-            <AiOutlinePlus size={20} />
-            Create Contact
+    <>
+      <div
+        className={`w-[300px] min-h-screen fixed bg-white text-slate-900  transition duration-300 shadow z-30 lg:z-0 top-0 lg:top-[65px] ${
+          sideBarToggle ? "lg:translate-x-0" : "-translate-x-[100%]"
+        }`}
+      >
+        <div className="items-center gap-2 pt-3 px-5 flex lg:hidden">
+          <div
+            onClick={toggleSidebar}
+            className="flex justify-center items-center transition w-10 h-10 rounded-full hover:bg-gray-300/50 cursor-pointer"
+          >
+            <RxCross2 size={20} />
           </div>
-        </Link>
-        <NavLink to={"/"}>
-          <div className=" w-[280px]  flex justify-between items-center py-2 px-6 rounded-r-full transition-all hover:bg-gray-200">
-            <div className=" flex items-center gap-x-5">
-              <RiContactsLine />
-              <span>Contacts</span>
+          <Link to={"/"} className=" flex items-center">
+            <img src={logo} alt="logo" className=" w-10 hidden sm:block" />
+            <span className="text-2xl font-normal tracking-tight text-[#5f6368]">
+              Contacts
+            </span>
+          </Link>
+        </div>
+        <ul className="flex flex-col mt-4">
+          <Link to={"/create"} className="ml-2 mb-5">
+            <div className=" w-fit px-6 py-3 rounded-full outline-none flex items-center gap-4 bg-white text-black shadow border transition-all hover:shadow-xl hover:text-blue-500">
+              <AiOutlinePlus size={20} />
+              Create Contact
             </div>
-            <span>8</span>
-          </div>
-        </NavLink>
-        <NavLink to={"/detail"}>
-          <div className=" w-[280px]  flex justify-between items-center py-2 px-6 rounded-r-full transition-all hover:bg-gray-200">
-            <div className=" flex items-center gap-x-5">
-              <RiContactsLine />
-              <span>Contacts</span>
+          </Link>
+          <NavLink to={"/"} className="">
+            <div className=" w-[280px]  flex justify-between items-center py-2 px-8 rounded-r-full transition-all hover:bg-gray-300">
+              <div className=" flex items-center gap-x-5">
+                <RiContactsLine className="" />
+                <span>Contacts</span>
+              </div>
+              <span className="">8</span>
             </div>
-          </div>
-        </NavLink>
-      </ul>
-    </div>
+          </NavLink>
+        </ul>
+      </div>
+      <div
+        className={`min-h-screen w-full bg-neutral-500/90 lg:hidden ${
+          sideBarToggle ? "absolute top-0 z-20" : "hidden"
+        }`}
+      ></div>
+    </>
   );
 };
 
