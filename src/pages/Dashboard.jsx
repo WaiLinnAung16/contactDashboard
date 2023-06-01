@@ -1,15 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 
 const Dashboard = () => {
+  const [sideBarToggle, setSideBarToggle] = useState(true);
+  const toggleSidebar = () => {
+    setSideBarToggle((show) => !show);
+  };
   return (
     <div className="flex flex-col">
-      <Header />
+      <Header toggleSidebar={toggleSidebar} />
       <div className="flex">
-        <Sidebar />
-        <div className="m-0 lg:ml-[300px]">{<Outlet />}</div>
+        <Sidebar sideBarToggle={sideBarToggle} />
+        <div
+          className={`m-0 p-5 ${sideBarToggle ? "lg:ml-[300px]" : " lg:ml-0"}`}
+        >
+          {<Outlet />}
+        </div>
       </div>
     </div>
   );
