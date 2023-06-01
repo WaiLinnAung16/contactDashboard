@@ -44,7 +44,7 @@ const Register = () => {
   };
 
   return (
-    <div className="flex items-center justify-between px-10 py-5 my-5 md:my-0">
+    <div className="flex items-center justify-between h-screen px-10 py-5 my-5 md:my-0">
       <div className="hidden md:block w-[50%] h-auto">
         <img
           src="https://img.freepik.com/premium-vector/smiling-man-holding-smart-phone-wearing-casual-clothes-standing-showing-thumbs-up-positive-gesture-ok-sign-gesture-language-concept-illustration_270158-266.jpg?w=740"
@@ -52,10 +52,10 @@ const Register = () => {
         />
       </div>
 
-      <div className="shadow md:shadow-none px-5 py-4 w-[350px] lg:w-[30%] mx-auto">
-        <div className="mb-8">
-          <h1 className="font-bold text-2xl mb-4">Registration</h1>
-          <p className="text-sm leading-tight">
+      <div className="shadow md:shadow-none px-5 py-4 w-[350px] lg:w-[40%] xl:w-[30%] mx-auto">
+        <div className="mb-6">
+          <h1 className="font-bold text-2xl mb-3">Registration</h1>
+          <p className=" leading-tight">
             Get Started with Us: Sign Up and Experience a New Level of
             Convenience!
           </p>
@@ -67,7 +67,7 @@ const Register = () => {
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="shadow block border rounded-full px-2 py-1 w-full  focus:outline-blue-400 "
+                className="shadow block border rounded-md mt-1 px-3 py-1 w-full  focus:outline-blue-400 "
                 type="text"
                 id="username"
               />
@@ -80,7 +80,7 @@ const Register = () => {
               <input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="shadow block border rounded-full px-2 py-1 w-full  focus:outline-blue-400"
+                className="shadow block border rounded-md mt-1 px-3 py-1 w-full  focus:outline-blue-400"
                 type="text"
                 id="email"
               />
@@ -93,8 +93,8 @@ const Register = () => {
               <input
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="shadow block border rounded-full px-2 py-1 w-full  focus:outline-blue-400"
-                type="text"
+                className="shadow block border rounded-md mt-1 px-3 py-1 w-full  focus:outline-blue-400"
+                type="password"
                 id="password"
               />
               <span className="text-red-500">
@@ -102,13 +102,13 @@ const Register = () => {
               </span>
             </div>
 
-            <div className="mb-8">
+            <div className="mb-6">
               <label htmlFor="passwordConfirmation">Confirm Password</label>
               <input
                 value={password_confirmation}
                 onChange={(e) => setPasswordConfirmation(e.target.value)}
-                className="shadow block border rounded-full px-2 py-1 w-full  focus:outline-blue-400"
-                type="text"
+                className="shadow block border rounded-md mt-1 px-3 py-1 w-full  focus:outline-blue-400"
+                type="password"
                 id="passwordConfirmation"
               />
               <span className="text-red-500">
@@ -118,18 +118,18 @@ const Register = () => {
               </span>
             </div>
 
-            <div className="text-blue-400 flex justify-center text-sm gap-4 mb-3">
-              <p>already have an account?</p>
-              <Link to="/login">
-                <span className="cursor-pointer">Login here</span>
-              </Link>
-            </div>
             <button
               type="submit"
-              className="bg-blue-600 px-5 py-1 w-full text-white rounded-full"
+              className="bg-blue-600 px-5 py-1 w-full text-white rounded-md mb-3"
             >
-              sign up
+              Sign up
             </button>
+            <div className="text-blue-400 flex justify-center text-sm gap-3 ">
+              <p>Already have an account?</p>
+              <Link to="/login">
+                <span className="cursor-pointer underline">Login here</span>
+              </Link>
+            </div>
           </form>
         </div>
       </div>
