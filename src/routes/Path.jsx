@@ -13,7 +13,14 @@ const Path = () => {
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Dashboard />}>
+          <Route
+            path="/"
+            element={
+              <RouteGuard>
+                <Dashboard />
+              </RouteGuard>
+            }
+          >
             <Route index element={<Contacts />} />
             <Route path="create" element={<Create />} />
             <Route path="detail/:id" element={<Detail />} />
