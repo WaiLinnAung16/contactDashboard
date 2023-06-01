@@ -41,7 +41,6 @@ const Login = () => {
     if (validation()) {
       const user = { email, password };
       const { data } = await login(user);
-      console.log(data)
       if (data?.success) {
         dispatch(addUser({user: data?.user, token: data?.token}))
         nav("/");
