@@ -1,6 +1,8 @@
 import React from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useRegisterMutation } from "../redux/api/AuthApi";
+
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -8,6 +10,10 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [password_confirmation, setPasswordConfirmation] = useState("");
   const [errors, setErrors] = useState({});
+
+  const [register] = useRegisterMutation();
+
+  const nav = useNavigate();
 
   const validation = () => {
     let errorText = {};
@@ -36,12 +42,25 @@ const Register = () => {
     return isValid;
   };
 
-  const formHandler = (e) => {
-    e.preventDefault();
-    if (validation()) {
-      console.log(name, email, password);
+  const formHandler =async(e) => {
+      try {
+        e.preventDefault();
+        if(validation()){
+           const user = {name,email,password,password_confirmation};
+      const{ data} = await register(user);
+      console.log("data",data)
+      if(data?.success){
+        nav('/login')
+      }
+        }
+     
+      
+      } catch (error) {
+        console.log(error)
+      }
+      
     }
-  };
+
 
   return (
     <div className="flex items-center justify-between px-10 py-5 my-5 md:my-0">
@@ -67,7 +86,7 @@ const Register = () => {
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="shadow block border rounded-full px-2 py-1 w-full  focus:outline-blue-400 "
+                className="shadow block border rounded-md px-2 py-1 w-full  focus:outline-blue-400 "
                 type="text"
                 id="username"
               />
@@ -80,7 +99,7 @@ const Register = () => {
               <input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="shadow block border rounded-full px-2 py-1 w-full  focus:outline-blue-400"
+                className="shadow block border rounded-md px-2 py-1 w-full  focus:outline-blue-400"
                 type="text"
                 id="email"
               />
@@ -93,7 +112,7 @@ const Register = () => {
               <input
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="shadow block border rounded-full px-2 py-1 w-full  focus:outline-blue-400"
+                className="shadow block border rounded-md px-2 py-1 w-full  focus:outline-blue-400"
                 type="text"
                 id="password"
               />
@@ -107,7 +126,7 @@ const Register = () => {
               <input
                 value={password_confirmation}
                 onChange={(e) => setPasswordConfirmation(e.target.value)}
-                className="shadow block border rounded-full px-2 py-1 w-full  focus:outline-blue-400"
+                className="shadow block border rounded-md px-2 py-1 w-full  focus:outline-blue-400"
                 type="text"
                 id="passwordConfirmation"
               />
@@ -126,7 +145,7 @@ const Register = () => {
             </div>
             <button
               type="submit"
-              className="bg-blue-600 px-5 py-1 w-full text-white rounded-full"
+              className="bg-blue-600 px-5 py-1 w-full text-white rounded-md"
             >
               sign up
             </button>
