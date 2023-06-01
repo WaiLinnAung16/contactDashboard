@@ -15,11 +15,14 @@ import { userSchema } from "../validationschema";
 import { useCreateContactMutation } from "../redux/api/contactApi";
 import { Toaster, toast } from "react-hot-toast";
 import ToastAlert from "../components/ToastAlert";
+import { useSelector } from "react-redux";
 
 const Create = () => {
   const [toggleModal, setToggleModal] = useState(false);
   const navigate = useNavigate();
   const [createContact] = useCreateContactMutation();
+  const [profileImg, setProfileImg] = useState("");
+  const { token } = useSelector((store) => store.authSlice);
 
   // formik
   const formik = useFormik({
@@ -33,11 +36,16 @@ const Create = () => {
     validationSchema: userSchema,
 
     onSubmit: async (values, actions) => {
-      const data = await createContact({ userData: values });
-      toast.custom(<ToastAlert title={"create user success"} />);
-      setTimeout(() => {
-        actions.resetForm();
-      }, 1000);
+      const { data } = await createContact({ userData: values, token });
+      // console.log(data);
+      if (data?.success) {
+        toast.custom(<ToastAlert title={"create user success"} />);
+        setTimeout(() => {
+          actions.resetForm();
+          navigate('/')
+        }, 1000);
+        
+      }
     },
   });
   // console.log(formik.errors);
@@ -46,7 +54,11 @@ const Create = () => {
     <>
       <Toaster position="bottom-center" reverseOrder={false} />
       {toggleModal && (
-        <Modal toggleModal={toggleModal} setToggleModal={setToggleModal} />
+        <Modal
+          toggleModal={toggleModal}
+          setToggleModal={setToggleModal}
+          setProfileImg={setProfileImg}
+        />
       )}
       <div>
         <div className="border-b top-20 bg-white fixed w-full z-10">
@@ -58,12 +70,19 @@ const Create = () => {
               >
                 <RxCross2 />
               </button>
-              <div
-                onClick={() => setToggleModal(!toggleModal)}
-                className=" p-16 bg-sky-200 rounded-full w-fit cursor-pointer"
-              >
-                <MdOutlineAddPhotoAlternate className=" text-3xl" />
-              </div>
+              {profileImg ? (
+                <img
+                  src={profileImg}
+                  className=" w-[150px] h-[150px] object-cover rounded-full"
+                />
+              ) : (
+                <div
+                  onClick={() => setToggleModal(!toggleModal)}
+                  className=" w-[150px] h-[150px] flex items-center justify-center bg-sky-200 rounded-full"
+                >
+                  <MdOutlineAddPhotoAlternate className=" text-3xl" />
+                </div>
+              )}
               <button className="hover:bg-gray-200 flex gap-3 items-center border border-gray-400 px-2 py-1 text-sm rounded-lg">
                 <span className=" text-lg text-blue-700 cursor-pointer">
                   <AiOutlinePlus />
@@ -91,8 +110,8 @@ const Create = () => {
 
         <form id="create-form" onSubmit={formik.handleSubmit}>
           <div className=" m-10 space-y-8 mt-[400px] md:mt-[280px]">
-            <div className=" flex items-center gap-8">
-              <AiOutlineUser className=" create-name text-xl text-gray-400 group" />
+            <div className=" flex items-start gap-8">
+              <AiOutlineUser className=" mt-4 text-xl text-gray-400" />
               <div className="w-[300px] md:w-[500px]">
                 <div className="relative">
                   <input
@@ -125,8 +144,8 @@ const Create = () => {
                 )}
               </div>
             </div>
-            <div className=" flex items-center gap-8">
-              <div className=" flex flex-col items-center">
+            <div className=" flex items-start gap-8">
+              <div className=" mt-4">
                 <AiOutlinePhone className=" text-xl text-gray-400" />
               </div>
               <div className=" flex flex-col w-[300px] md:w-[500px] gap-2">
@@ -161,8 +180,8 @@ const Create = () => {
                 )}
               </div>
             </div>
-            <div className=" flex items-center gap-8">
-              <div className=" flex flex-col items-center">
+            <div className=" flex items-start gap-8">
+              <div className="mt-4">
                 <AiOutlineMail className=" text-xl text-gray-500" />
               </div>
               <div className=" flex flex-col gap-2  w-[300px] md:w-[500px]">
@@ -197,8 +216,8 @@ const Create = () => {
                 )}
               </div>
             </div>
-            <div className=" flex items-center gap-8">
-              <div className=" flex flex-col items-center">
+            <div className=" flex items-start gap-8">
+              <div className="mt-4">
                 <FaRegAddressCard className=" text-xl text-gray-500" />
               </div>
               <div className="w-[300px] md:w-[500px]">

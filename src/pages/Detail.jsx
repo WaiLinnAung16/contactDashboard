@@ -11,10 +11,12 @@ import {
 } from "../redux/api/contactApi";
 import DeleteModal from "../components/DeleteModal";
 import { Toaster } from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 const Detail = () => {
-  const { id } = parseInt(useParams());
-  const { data: contact } = useGetSingleContactQuery({ id });
+  const { id } = useParams();
+  const { token } = useSelector((store) => store.authSlice);
+  const { data: contact } = useGetSingleContactQuery({ id, token });
   const [deleteContact] = useDeleteContactMutation();
 
   const navigate = useNavigate();
@@ -31,46 +33,44 @@ const Detail = () => {
           id={id}
         />
       )}
-      <div className="w-[75%] mx-auto p-5">
-        <div className=" m-10 flex justify-between">
-          <div className=" flex items-center gap-10">
-            <button
-              className=" self-start text-xl"
-              onClick={() => navigate(-1)}
-            >
-              <RxCross2 />
-            </button>
-            <img
-              className=" w-[150px] rounded-full"
-              src="https://www.gstatic.com/identity/boq/profilepicturepicker/photo_silhouette_e02a5f5deb3ffc173119a01bc9575490.png"
-              alt=""
-            />
-            <div className=" flex flex-col items-center gap-3">
-              <h1 className=" text-2xl ">myo nyi</h1>
+      <div className=" md:w-[65%] w-full mx-auto">
+        <div className="border-b top-20 bg-white w-full z-10">
+          <div className=" w-full p-5 flex justify-between flex-col md:flex-row">
+            <div className=" flex flex-col md:flex-row items-center gap-5 md:gap-10 ">
+              <button
+                className=" self-start text-xl cursor-pointer"
+                onClick={() => navigate(-1)}
+              >
+                <RxCross2 />
+              </button>
+              <img
+                className=" w-[150px] h-[150px] rounded-full"
+                src="https://www.gstatic.com/identity/boq/profilepicturepicker/photo_silhouette_e02a5f5deb3ffc173119a01bc9575490.png"
+                alt=""
+              />
               <button className="hover:bg-gray-200 flex gap-3 items-center border border-gray-400 px-2 py-1 text-sm rounded-lg">
-                <span className=" text-lg text-blue-700 ">
+                <span className=" text-lg text-blue-700 cursor-pointer">
                   <AiOutlinePlus />
                 </span>
                 Label
               </button>
             </div>
-          </div>
-
-          <div className=" flex items-center gap-8 self-end">
-            <button
-              className=" text-red-500 hover:scale-110 transition"
-              onClick={() => setToggleDelModal(!toggleDelModal)}
-            >
-              <BiTrash />
-            </button>
-            <button className=" btn" onClick={() => navigate(`/update/${id}`)}>
-              Edit
-            </button>
+            <div className=" flex items-center gap-5 self-center md:self-end mt-5">
+              <button onClick={()=> setToggleDelModal(!toggleDelModal)} className="hover:scale-110 transition-all text-xl text-red-500">
+                <BiTrash />
+              </button>
+              <button
+                onClick={() => navigate(`/update/${id}`)}
+                className=" btn"
+              >
+                Edit
+              </button>
+            </div>
           </div>
         </div>
         <hr />
-        <div className=" m-10 flex items-center gap-10">
-          <div className=" border rounded-lg p-4 w-[500px]">
+        <div className=" m-10 flex flex-col md:flex-row items-center gap-10">
+          <div className=" border rounded-lg p-4 flex-[3]">
             <h4 className=" text-lg mb-4 font-medium text-gray-500">
               Contact details
             </h4>
@@ -86,7 +86,7 @@ const Detail = () => {
               </p>
             </div>
           </div>
-          <div className=" space-y-3">
+          <div className=" space-y-3 flex-[2]">
             <h4 className=" flex items-center gap-3 text-gray-500 text-lg font-medium">
               History
               <BsQuestionCircle />

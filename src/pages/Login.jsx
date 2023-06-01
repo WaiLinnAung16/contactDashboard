@@ -2,8 +2,11 @@ import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../redux/api/contactApi";
+import { useDispatch } from "react-redux";
+import { addUser } from "../redux/services/authSlice";
 
 const Login = () => {
+  const dispatch = useDispatch()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
@@ -38,8 +41,9 @@ const Login = () => {
     if (validation()) {
       const user = { email, password };
       const { data } = await login(user);
-      // console.log(data)
+      console.log(data)
       if (data?.success) {
+        dispatch(addUser({user: data?.user, token: data?.token}))
         nav("/");
       }
     }

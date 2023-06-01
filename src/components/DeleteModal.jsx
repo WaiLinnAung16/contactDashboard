@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import ToastAlert from "./ToastAlert";
 import { toast } from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 const DeleteModal = ({
   toggleDelModal,
@@ -8,6 +9,7 @@ const DeleteModal = ({
   deleteContact,
   id,
 }) => {
+  const { token } = useSelector((store) => store.authSlice);
   const closeModal = (e) => {
     if (e.target.classList.contains("backdrop")) {
       setToggleDelModal(!toggleDelModal);
@@ -15,9 +17,11 @@ const DeleteModal = ({
   };
 
   const deleteContactHandler = async () => {
-    const data = await deleteContact({ id });
-    setToggleDelModal(!toggleDelModal);
-    toast.custom(<ToastAlert title={"delete success"} />);
+    const { data } = await deleteContact({ id, token });
+    if (data?.success) {
+      setToggleDelModal(!toggleDelModal);
+      toast.custom(<ToastAlert title={"delete success"} />);
+    }
   };
   return (
     <div

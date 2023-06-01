@@ -6,6 +6,7 @@ import Contacts from "../pages/Contacts";
 import Detail from "../pages/Detail";
 import Create from "../pages/Create";
 import Update from "../pages/Update";
+import RouteGuard from "./RouteGuard";
 
 const Path = () => {
   return (

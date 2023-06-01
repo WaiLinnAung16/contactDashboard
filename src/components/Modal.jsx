@@ -3,12 +3,33 @@ import { RxCross2 } from "react-icons/rx";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { MdOutlineComputer } from "react-icons/md";
 
-const Modal = ({ toggleModal, setToggleModal }) => {
+const Modal = ({ toggleModal, setToggleModal, setProfileImg }) => {
   const fileRef = useRef(null);
   const closeModal = (e) => {
     if (e.target.classList.contains("backdrop")) {
       setToggleModal(!toggleModal);
     }
+  };
+
+  const readFileHandler = (e) => {
+    // console.log(e.target.files[0]);
+    const reader = new FileReader();
+    reader.addEventListener("load", (e) => {
+      setProfileImg(e.target.result);
+    });
+    reader.readAsDataURL(e.target.files[0]);
+    setToggleModal(!toggleModal);
+  };
+
+  const uploadFileHandler = (e) => {
+    e.preventDefault();
+    // console.log(e.dataTransfer.files[0]);
+    const reader = new FileReader();
+    reader.addEventListener("load", (e) => {
+      setProfileImg(e.target.result);
+    });
+    reader.readAsDataURL(e.dataTransfer.files[0]);
+    setToggleModal(!toggleModal);
   };
   return (
     <div
@@ -37,11 +58,17 @@ const Modal = ({ toggleModal, setToggleModal }) => {
 
           <div className="p-6 space-y-6">
             <div className=" flex flex-col items-center gap-4">
-              <img
-                className=" w-[175px]"
-                src="https://www.gstatic.com/identity/boq/profilepicturepicker/photo_silhouette_e02a5f5deb3ffc173119a01bc9575490.png"
-                alt=""
-              />
+              <div
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={uploadFileHandler}
+              >
+                <img
+                  className=" w-[175px]"
+                  src="https://www.gstatic.com/identity/boq/profilepicturepicker/photo_silhouette_e02a5f5deb3ffc173119a01bc9575490.png"
+                  alt=""
+                />
+              </div>
+
               <h1 className=" text-2xl text-gray-500">Drag photo here</h1>
               <button
                 onClick={() => fileRef.current.click()}
@@ -50,7 +77,13 @@ const Modal = ({ toggleModal, setToggleModal }) => {
                 <MdOutlineComputer className=" text-2xl" />
                 Upload from computer
               </button>
-              <input type="file" ref={fileRef} name="" className="hidden" />
+              <input
+                type="file"
+                onChange={readFileHandler}
+                ref={fileRef}
+                name=""
+                className="hidden"
+              />
             </div>
           </div>
         </div>
