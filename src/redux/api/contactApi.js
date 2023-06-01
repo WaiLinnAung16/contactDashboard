@@ -23,6 +23,14 @@ export const contactApi = createApi({
       }),
       invalidatesTags: "Auth",
     }),
+    logout: builder.mutation({
+      query: (token) => ({
+        url: "/user-logout",
+        method: "POST",
+        headers: {authorization: `Bearer ${token}`}
+      }),
+      invalidatesTags: ['auth']
+    }),
 
     getContact: builder.query({
       query: (token) => ({
@@ -51,6 +59,7 @@ export const contactApi = createApi({
       query: ({ id, token }) => ({
         url: `/contact/${id}`,
         method: "DELETE",
+        body: id,
         headers: { authorization: `Bearer ${token}` },
       }),
       invalidatesTags: ["contact"],
@@ -70,6 +79,7 @@ export const contactApi = createApi({
 export const {
   useRegisterMutation,
   useLoginMutation,
+  useLogoutMutation,
   useGetContactQuery,
   useGetSingleContactQuery,
   useCreateContactMutation,

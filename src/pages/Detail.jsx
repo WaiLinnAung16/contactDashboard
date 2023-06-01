@@ -22,6 +22,20 @@ const Detail = () => {
   const navigate = useNavigate();
 
   const [toggleDelModal, setToggleDelModal] = useState(false);
+
+  const formatDate = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    };
+    const date = new Date(dateString);
+    return date.toLocaleString("en-US", options);
+  };
+
   return (
     <>
       <Toaster position="bottom-center" reverseOrder={false} />
@@ -56,7 +70,10 @@ const Detail = () => {
               </button>
             </div>
             <div className=" flex items-center gap-5 self-center md:self-end mt-5">
-              <button onClick={()=> setToggleDelModal(!toggleDelModal)} className="hover:scale-110 transition-all text-xl text-red-500">
+              <button
+                onClick={() => setToggleDelModal(!toggleDelModal)}
+                className="hover:scale-110 transition-all text-xl text-red-500"
+              >
                 <BiTrash />
               </button>
               <button
@@ -76,13 +93,15 @@ const Detail = () => {
             </h4>
             <div className=" space-y-3">
               <p className=" flex items-center gap-3 text-blue-500">
-                <AiOutlineMail className=" text-xl" /> mgmyonyi@gmail.com
+                <AiOutlineMail className=" text-xl" /> {contact?.contact?.email}
               </p>
               <p className=" flex items-center gap-3 text-blue-500">
-                <AiOutlinePhone className=" text-xl" /> 0923482428
+                <AiOutlinePhone className=" text-xl" />{" "}
+                {contact?.contact?.phone}
               </p>
               <p className=" flex items-center gap-3 text-blue-500">
-                <FaRegAddressCard className=" text-xl" /> yangon
+                <FaRegAddressCard className=" text-xl" />{" "}
+                {contact?.contact?.address}
               </p>
             </div>
           </div>
@@ -92,10 +111,10 @@ const Detail = () => {
               <BsQuestionCircle />
             </h4>
             <p className=" text-gray-500 text-sm">
-              Last edited•Yesterday, 15:34
+              Last edited • {formatDate(contact?.contact.updated_at)}
             </p>
             <p className=" text-gray-500 text-sm">
-              Added to contacts•Yesterday, 15:34
+              Created at • {formatDate(contact?.contact.created_at)}
             </p>
           </div>
         </div>

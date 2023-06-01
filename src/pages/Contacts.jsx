@@ -1,10 +1,22 @@
 import Cookies from "js-cookie";
 import React from "react";
-import { useGetContactQuery } from "../redux/api/contactApi";
+import {
+  useDeleteContactMutation,
+  useGetContactQuery,
+} from "../redux/api/contactApi";
 import { BiEditAlt, BiTrash } from "react-icons/bi";
+import { Link } from "react-router-dom";
+
 const Contacts = () => {
   const token = Cookies.get("token");
   const { data } = useGetContactQuery(token);
+
+  const [deleteContact] = useDeleteContactMutation();
+
+  const deleteHandler = async (id) => {
+    const data = await deleteContact({ id, token });
+  };
+
   return (
     <div className="text-sm text-gray-500">
       <h1 className="my-5 pl-5">
@@ -25,7 +37,7 @@ const Contacts = () => {
           {data?.contacts?.data?.map((contact) => {
             return (
               <tr
-                className="transition-all duration-300 hover:bg-gray-100"
+                className="transition-all duration-300 group/item hover:bg-gray-100 cursor-pointer "
                 key={contact.id}
               >
                 <td className="py-3 flex justify-center">
@@ -42,9 +54,15 @@ const Contacts = () => {
                   {contact.address ? contact.address : "Myanmar"}
                 </td>
                 <td>
-                  <div className="text-xl flex gap-5 items-center cursor-pointer">
-                    <BiEditAlt />
-                    <BiTrash />
+                  <div className="text-xl flex gap-5 items-center cursor-pointer invisible transition duration-200 group-hover/item:visible">
+                    <Link to={`detail/${contact.id}`}>
+                      <BiEditAlt className=" transition hover:opacity-80" />
+                    </Link>
+
+                    <BiTrash
+                      className=" transition hover:opacity-80"
+                      onClick={() => deleteHandler(contact?.id)}
+                    />
                   </div>
                 </td>
               </tr>
