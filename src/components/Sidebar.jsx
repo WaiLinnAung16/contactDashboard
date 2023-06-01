@@ -3,12 +3,17 @@ import { RiContactsLine } from "react-icons/ri";
 import { RxCross2 } from "react-icons/rx";
 import logo from "../assets/contacts-logo.png";
 import { Link, NavLink } from "react-router-dom";
+import { useGetContactQuery } from "../redux/api/contactApi";
+import Cookies from "js-cookie";
 
 const Sidebar = ({ sideBarToggle, toggleSidebar }) => {
+  const token = Cookies.get("token");
+  const { data } = useGetContactQuery(token);
+  const contactLength = data?.contacts?.data.length;
   return (
     <>
       <div
-        className={`w-[300px] min-h-screen fixed bg-white text-slate-900  transition duration-300 shadow z-30 lg:z-0 top-0 lg:top-[65px] ${
+        className={`w-[290px] min-h-screen fixed bg-white text-slate-900  transition duration-300 border-r z-30 lg:z-0 top-0 lg:top-[65px] ${
           sideBarToggle ? "lg:translate-x-0" : "-translate-x-[100%]"
         }`}
       >
@@ -39,7 +44,7 @@ const Sidebar = ({ sideBarToggle, toggleSidebar }) => {
                 <RiContactsLine className="" />
                 <span>Contacts</span>
               </div>
-              <span className="">8</span>
+              <span className="">{contactLength}</span>
             </div>
           </NavLink>
         </ul>

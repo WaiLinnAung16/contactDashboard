@@ -15,7 +15,7 @@ const Dashboard = () => {
         <Sidebar sideBarToggle={sideBarToggle} toggleSidebar={toggleSidebar} />
         <div
           className={`m-0 w-full transition-all duration-300 ${
-            sideBarToggle ? "lg:ml-[310px]" : " lg:ml-0"
+            sideBarToggle ? "lg:ml-[290px]" : " lg:ml-0"
           }`}
         >
           {<Outlet />}
