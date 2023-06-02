@@ -7,9 +7,10 @@ import { useRef, useState } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLogoutMutation } from "../redux/api/contactApi";
 import { removeUser } from "../redux/services/authSlice";
+import { setSearchTerm } from "../redux/services/contactSlice";
 
 const Header = ({ toggleSidebar }) => {
   const inputRef = useRef(null);
@@ -20,6 +21,8 @@ const Header = ({ toggleSidebar }) => {
     setSearch((pre) => !pre);
   };
 
+  const dispatch = useDispatch()
+
   const nav = useNavigate();
 
   const user = JSON.parse(Cookies.get("user"));
@@ -27,7 +30,6 @@ const Header = ({ toggleSidebar }) => {
 
   const [userToggle, setUserToggle] = useState(false);
 
-  const dispatch = useDispatch();
 
   const [logout] = useLogoutMutation();
 
@@ -66,6 +68,7 @@ const Header = ({ toggleSidebar }) => {
               </button>
 
               <input
+                onChange={(e)=> dispatch(setSearchTerm(e.target.value))}
                 className=" bg-transparent outline-none placeholder:text-gray-400 w-full  focus:bg-white"
                 type="text"
                 name=""

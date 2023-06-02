@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AiOutlinePhone,
   AiOutlineMail,
@@ -19,6 +19,7 @@ import {
 } from "../redux/api/contactApi";
 import ToastAlert from "../components/ToastAlert";
 import { useSelector } from "react-redux";
+import Spinner from "../components/Spinner";
 
 const Update = () => {
   const { id } = useParams();
@@ -28,16 +29,21 @@ const Update = () => {
   const { token } = useSelector((store) => store.authSlice);
 
   const [updateContact] = useUpdateContactMutation();
-  const { data: contact } = useGetSingleContactQuery({ id, token });
-  console.log(contact);
+  const { data: contact, isLoading } = useGetSingleContactQuery({ id, token });
+  const [data, setData] = useState({})
+  console.log(data);
+
+  useEffect(()=> {
+    setData(contact?.contact)
+  }, [contact])
 
   // formik
   const formik = useFormik({
     initialValues: {
-      name: contact?.name,
-      phone: contact?.phone,
-      email: contact?.email,
-      address: contact?.address,
+      name: "",
+      phone: "",
+      email: "",
+      address: "",
     },
 
     validationSchema: userSchema,
@@ -56,6 +62,12 @@ const Update = () => {
       }
     },
   });
+
+  if(isLoading){
+    return (
+      <Spinner/>
+    )
+  }
 
   // console.log(formik.errors);
   // console.log(formik.touched);
@@ -92,12 +104,17 @@ const Update = () => {
                   <MdOutlineAddPhotoAlternate className=" text-3xl" />
                 </div>
               )}
-              <button className="hover:bg-gray-200 flex gap-3 items-center border border-gray-400 px-2 py-1 text-sm rounded-lg">
-                <span className=" text-lg text-blue-700 cursor-pointer">
-                  <AiOutlinePlus />
-                </span>
-                Label
-              </button>
+              <div className=" space-y-3">
+                <h1 className=" text-xl font-medium text-gray-600">
+                  {contact?.contact?.name}
+                </h1>
+                <button className="hover:bg-gray-200 flex gap-3 items-center border border-gray-400 px-2 py-1 text-sm rounded-lg">
+                  <span className=" text-lg text-blue-700 cursor-pointer">
+                    <AiOutlinePlus />
+                  </span>
+                  Label
+                </button>
+              </div>
             </div>
             <button
               form="create-form"
@@ -126,7 +143,7 @@ const Update = () => {
                   <input
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    defaultValue={formik.values.name}
+                    defaultValue={data?.name}
                     type="text"
                     id="name"
                     name="name"
@@ -162,8 +179,8 @@ const Update = () => {
                   <input
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    defaultValue={formik.values.phone}
-                    type="number"
+                    defaultValue={data?.phone}
+                    type="text"
                     id="phone"
                     name="phone"
                     className={`${
@@ -198,7 +215,7 @@ const Update = () => {
                   <input
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    defaultValue={formik.values.email}
+                    defaultValue={data?.email}
                     type="text"
                     id="email"
                     name="email"
@@ -234,7 +251,7 @@ const Update = () => {
                   <input
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    defaultValue={formik.values.address}
+                    defaultValue={data?.address}
                     type="text"
                     id="address"
                     name="address"

@@ -20,6 +20,7 @@ const DeleteModal = ({
 
   const deleteContactHandler = async () => {
     const { data } = await deleteContact({ id, token });
+    console.log(data);
     if (data?.success) {
       setToggleDelModal(!toggleDelModal);
       toast.custom(<ToastAlert title={"delete success"} />);
@@ -29,10 +30,10 @@ const DeleteModal = ({
   return (
     <div
       onClick={closeModal}
-      className="backdrop select-none bg-[#00000060] flex justify-center items-center fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0  max-h-full"
+      className="backdrop select-none bg-[#00000005] flex justify-center items-center fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0  max-h-full"
     >
       <div className="relative w-full max-w-2xl max-h-full ">
-        <div className="relative bg-white rounded-lg shadow w-[500px] mx-auto">
+        <div className="relative bg-white rounded-lg w-[500px] mx-auto">
           <div className=" p-4 space-y-4">
             <h1 className=" text-lg font-medium">Delete from contact ?</h1>
             <p className=" text-sm text-gray-500">

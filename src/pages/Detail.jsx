@@ -12,11 +12,12 @@ import {
 import DeleteModal from "../components/DeleteModal";
 import { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
+import Spinner from "../components/Spinner";
 
 const Detail = () => {
   const { id } = useParams();
   const { token } = useSelector((store) => store.authSlice);
-  const { data: contact } = useGetSingleContactQuery({ id, token });
+  const { data: contact, isLoading } = useGetSingleContactQuery({ id, token });
   const [deleteContact] = useDeleteContactMutation();
 
   const navigate = useNavigate();
@@ -35,6 +36,13 @@ const Detail = () => {
     const date = new Date(dateString);
     return date.toLocaleString("en-US", options);
   };
+
+  
+  if(isLoading){
+    return (
+      <Spinner/>
+    )
+  }
 
   return (
     <>
@@ -62,19 +70,24 @@ const Detail = () => {
                 src="https://www.gstatic.com/identity/boq/profilepicturepicker/photo_silhouette_e02a5f5deb3ffc173119a01bc9575490.png"
                 alt=""
               />
-              <button className="hover:bg-gray-200 flex gap-3 items-center border border-gray-400 px-2 py-1 text-sm rounded-lg">
-                <span className=" text-lg text-blue-700 cursor-pointer">
-                  <AiOutlinePlus />
-                </span>
-                Label
-              </button>
+              <div className=" space-y-3">
+                <h1 className=" text-xl font-medium text-gray-600">
+                  {contact?.contact?.name}
+                </h1>
+                <button className="hover:bg-gray-200 flex gap-3 items-center border border-gray-400 px-2 py-1 text-sm rounded-lg">
+                  <span className=" text-lg text-blue-700 cursor-pointer">
+                    <AiOutlinePlus />
+                  </span>
+                  Label
+                </button>
+              </div>
             </div>
             <div className=" flex items-center gap-5 self-center md:self-end mt-5">
               <button
                 onClick={() => setToggleDelModal(!toggleDelModal)}
-                className="hover:scale-110 transition-all text-xl text-red-500"
+                className="text-lg transition hover:opacity-70"
               >
-                <BiTrash />
+                <BiTrash/>
               </button>
               <button
                 onClick={() => navigate(`/update/${id}`)}
