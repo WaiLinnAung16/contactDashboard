@@ -37,11 +37,8 @@ const Detail = () => {
     return date.toLocaleString("en-US", options);
   };
 
-  
-  if(isLoading){
-    return (
-      <Spinner/>
-    )
+  if (isLoading) {
+    return <Spinner />;
   }
 
   return (
@@ -55,7 +52,7 @@ const Detail = () => {
           id={id}
         />
       )}
-      <div className=" md:w-[65%] w-full mx-auto">
+      <div className="w-full">
         <div className="border-b top-20 bg-white w-full z-10">
           <div className=" w-full p-5 flex justify-between flex-col md:flex-row">
             <div className=" flex flex-col md:flex-row items-center gap-5 md:gap-10 ">
@@ -87,7 +84,7 @@ const Detail = () => {
                 onClick={() => setToggleDelModal(!toggleDelModal)}
                 className="text-lg transition hover:opacity-70"
               >
-                <BiTrash/>
+                <BiTrash />
               </button>
               <button
                 onClick={() => navigate(`/update/${id}`)}
@@ -99,8 +96,8 @@ const Detail = () => {
           </div>
         </div>
         <hr />
-        <div className=" m-10 flex flex-col md:flex-row items-center gap-10">
-          <div className=" border rounded-lg p-4 flex-[3]">
+        <div className="m-5 md:m-10 flex flex-col md:flex-row md:items-center items-start gap-10">
+          <div className=" border rounded-lg p-4 flex-[3] w-full">
             <h4 className=" text-lg mb-4 font-medium text-gray-500">
               Contact details
             </h4>

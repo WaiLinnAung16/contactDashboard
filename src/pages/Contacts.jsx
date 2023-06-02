@@ -32,10 +32,8 @@ const Contacts = () => {
     dispatch(getContacts(data?.contacts?.data));
   }, [data]);
 
-  if(isLoading){
-    return (
-      <Spinner/>
-    )
+  if (isLoading) {
+    return <Spinner />;
   }
 
   return (
@@ -63,8 +61,9 @@ const Contacts = () => {
               .map((contact) => {
                 return (
                   <tr
+                    key={contact.id}
                     onClick={() => navigate(`/detail/${contact.id}`)}
-                    className="transition-all duration-300 group/item hover:bg-gray-100 cursor-pointer "
+                    className="transition-all duration-300 group/item hover:bg-gray-100 cursor-pointer"
                   >
                     <Toaster position="bottom-center" reverseOrder={false} />
                     {toggleModel && (
@@ -84,12 +83,14 @@ const Contacts = () => {
                     <td className="py-3  md:visible invisible">
                       {contact.email ? contact.email : "example@gmail.com"}
                     </td>
-                    <td className="py-3  md:visible invisible">{contact.phone}</td>
+                    <td className="py-3  md:visible invisible">
+                      {contact.phone}
+                    </td>
                     <td className="py-3  md:visible invisible">
                       {contact.address ? contact.address : "Myanmar"}
                     </td>
-                    <td>
-                      <div className="text-xl flex gap-5 items-center cursor-pointer invisible transition duration-200 group-hover/item:visible">
+                    <td className="invisible md:visible ">
+                      <div className="text-xl md:flex gap-5 items-center cursor-pointer hidden">
                         <BiEditAlt
                           onClick={(e) => {
                             e.stopPropagation();

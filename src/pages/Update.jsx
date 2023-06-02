@@ -30,12 +30,12 @@ const Update = () => {
 
   const [updateContact] = useUpdateContactMutation();
   const { data: contact, isLoading } = useGetSingleContactQuery({ id, token });
-  const [data, setData] = useState({})
+  const [data, setData] = useState({});
   console.log(data);
 
-  useEffect(()=> {
-    setData(contact?.contact)
-  }, [contact])
+  useEffect(() => {
+    setData(contact?.contact);
+  }, [contact]);
 
   // formik
   const formik = useFormik({
@@ -54,19 +54,15 @@ const Update = () => {
       if (data?.success) {
         toast.custom(<ToastAlert title={"update success"} />);
         setTimeout(() => {
-          actions.resetForm()
+          actions.resetForm();
           navigate(`/detail/${id}`);
         }, 1000);
-
-        
       }
     },
   });
 
-  if(isLoading){
-    return (
-      <Spinner/>
-    )
+  if (isLoading) {
+    return <Spinner />;
   }
 
   console.log(formik.values);
@@ -137,7 +133,7 @@ const Update = () => {
         </div>
 
         <form id="create-form" onSubmit={formik.handleSubmit}>
-          <div className=" m-10 space-y-8 mt-[400px] md:mt-[280px]">
+          <div className=" m-10 space-y-8 mt-[430px] md:mt-[280px]">
             <div className=" flex items-start gap-8">
               <AiOutlineUser className=" mt-4 text-xl text-gray-400" />
               <div className="w-[300px] md:w-[500px]">
