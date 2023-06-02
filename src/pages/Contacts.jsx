@@ -32,10 +32,8 @@ const Contacts = () => {
     dispatch(getContacts(data?.contacts?.data));
   }, [data]);
 
-  if(isLoading){
-    return (
-      <Spinner/>
-    )
+  if (isLoading) {
+    return <Spinner />;
   }
 
   return (
