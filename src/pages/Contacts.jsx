@@ -6,8 +6,6 @@ import {
 } from "../redux/api/contactApi";
 import { BiEditAlt, BiTrash } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
-import DeleteModal from "../components/DeleteModal";
-import { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { getContacts } from "../redux/services/contactSlice";
 import Spinner from "../components/Spinner";
@@ -34,6 +32,15 @@ const Contacts = () => {
 
   if (isLoading) {
     return <Spinner />;
+  }
+
+  if(!data?.contacts?.data.length){
+    return (
+      <div className=" flex flex-col gap-5 justify-center items-center h-screen">
+        <h1 className=" text-2xl font-medium">There is no contact</h1>
+        <button onClick={()=> navigate(`/create`)} className=" btn">Create contact</button>
+      </div>
+    )
   }
 
   return (
@@ -65,19 +72,11 @@ const Contacts = () => {
                     onClick={() => navigate(`/detail/${contact.id}`)}
                     className="transition-all duration-300 group/item hover:bg-gray-100 cursor-pointer"
                   >
-                    <Toaster position="bottom-center" reverseOrder={false} />
-                    {toggleModel && (
-                      <DeleteModal
-                        toggleDelModal={toggleModel}
-                        setToggleDelModal={setToggleModal}
-                        deleteContact={deleteContact}
-                        id={contact.id}
-                      />
-                    )}
+                    
                     <td className="py-3 flex justify-center">
-                      <div className="w-[35px] h-[35px] bg-blue-700 text-white flex justify-center items-center rounded-full">
+                      <h1 className="w-[35px] h-[35px] bg-blue-700 text-white flex justify-center items-center rounded-full">
                         {contact.name.split("")[0].toUpperCase()}
-                      </div>
+                      </h1>
                     </td>
                     <td className="py-3">{contact.name}</td>
                     <td className="py-3  md:visible invisible">
@@ -102,8 +101,9 @@ const Contacts = () => {
                         <BiTrash
                           className=" transition hover:opacity-80"
                           onClick={(e) => {
-                            e.stopPropagation();
-                            setToggleModal(!toggleModel);
+                            e.stopPropagation()
+                            deleteHandler(contact.id)
+                        
                           }}
                         />
                       </div>

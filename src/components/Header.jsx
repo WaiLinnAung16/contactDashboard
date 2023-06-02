@@ -115,7 +115,7 @@ const Header = ({ toggleSidebar }) => {
       <div
         className={`absolute ${
           userToggle ? "block" : "hidden"
-        } bg-gray-200/80 w-[90%] left-5 md:w-[400px] top-[70px] md:right-2 rounded-xl z-50 px-1 py-1 border-4 border-gray-200/50 shadow-xl`}
+        } bg-gray-200/80 w-[90%] right-5 md:w-[400px] top-[70px] md:right-2 rounded-xl z-50 px-1 py-1 border-4 border-gray-200/50 shadow-xl`}
       >
         <div className=" flex flex-col gap-1">
           <div className="flex items-center gap-10 bg-gray-50/80 p-6 rounded-t-md">

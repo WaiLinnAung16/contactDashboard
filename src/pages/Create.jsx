@@ -11,16 +11,23 @@ import { RxCross2 } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 import Modal from "../components/Modal";
 import { useFormik } from "formik";
-import { userSchema } from "../validationschema";
 import { useCreateContactMutation } from "../redux/api/contactApi";
 import { Toaster, toast } from "react-hot-toast";
 import ToastAlert from "../components/ToastAlert";
 import { useSelector } from "react-redux";
+import * as Yup from "yup";
+
+ const userSchema = Yup.object().shape({
+  name: Yup.string().min(3).max(50).required(),
+  phone: Yup.string().required(),
+  email: Yup.string().email().required(),
+  address: Yup.string().required(),
+});
 
 const Create = () => {
   const [toggleModal, setToggleModal] = useState(false);
   const navigate = useNavigate();
-  const [createContact] = useCreateContactMutation();
+  const [createContact, {isLoading}] = useCreateContactMutation();
   const [profileImg, setProfileImg] = useState("");
   const { token } = useSelector((store) => store.authSlice);
 
@@ -48,8 +55,6 @@ const Create = () => {
       }
     },
   });
-  // console.log(formik.errors);
-  // console.log(formik.touched);
   return (
     <>
       <Toaster position="bottom-center" reverseOrder={false} />
@@ -95,12 +100,9 @@ const Create = () => {
               type="submit"
               className="md:self-end md:m-0 self-center mt-5 btn"
               disabled={
-                formik.values.name ||
-                formik.values.phone ||
-                formik.values.email ||
-                formik.values.address
-                  ? false
-                  : true
+                isLoading
+                  ? true
+                  : false
               }
             >
               Save

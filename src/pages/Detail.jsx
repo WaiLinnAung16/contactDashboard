@@ -52,7 +52,7 @@ const Detail = () => {
           id={id}
         />
       )}
-      <div className="w-full">
+      <div className=" md:mx-20">
         <div className="border-b top-20 bg-white w-full z-10">
           <div className=" w-full p-5 flex justify-between flex-col md:flex-row">
             <div className=" flex flex-col md:flex-row items-center gap-5 md:gap-10 ">
@@ -67,7 +67,7 @@ const Detail = () => {
                 src="https://www.gstatic.com/identity/boq/profilepicturepicker/photo_silhouette_e02a5f5deb3ffc173119a01bc9575490.png"
                 alt=""
               />
-              <div className=" space-y-3">
+              <div className=" flex flex-col items-center gap-3">
                 <h1 className=" text-xl font-medium text-gray-600">
                   {contact?.contact?.name}
                 </h1>
@@ -79,12 +79,12 @@ const Detail = () => {
                 </button>
               </div>
             </div>
-            <div className=" flex items-center gap-5 self-center md:self-end mt-5">
+            <div className=" flex items-center gap-5 self-center mr-5 md:self-end mt-5">
               <button
                 onClick={() => setToggleDelModal(!toggleDelModal)}
                 className="text-lg transition hover:opacity-70"
               >
-                <BiTrash />
+                <BiTrash className="hidden md:inline"/>
               </button>
               <button
                 onClick={() => navigate(`/update/${id}`)}

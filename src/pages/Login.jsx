@@ -4,14 +4,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../redux/api/contactApi";
 import { useDispatch } from "react-redux";
 import { addUser } from "../redux/services/authSlice";
+import {AiOutlineEyeInvisible, AiOutlineEye} from 'react-icons/ai'
+import { ClipLoader } from "react-spinners";
 
 const Login = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false)
 
-  const [login] = useLoginMutation();
+  const [login, {isLoading}] = useLoginMutation();
 
   const nav = useNavigate();
 
@@ -41,6 +44,7 @@ const Login = () => {
     if (validation()) {
       const user = { email, password };
       const { data } = await login(user);
+      // console.log(data);
       if (data?.success) {
         dispatch(addUser({ user: data?.user, token: data?.token }));
         nav("/");
@@ -93,11 +97,12 @@ const Login = () => {
                   <input
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    type="text"
+                    type={`${showPassword ? "text" : "password" }`}
                     id="password"
                     className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 border-gray-300 appearance-none dark:text-gray-600 dark:border-gray-300 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" "
                   />
+                  {showPassword ? <AiOutlineEye onClick={()=> setShowPassword(!showPassword)}  className=" cursor-pointer absolute bottom-[18px] right-5 hover:bg-gray-200 w-6 h-4 rounded-full"/> : <AiOutlineEyeInvisible  onClick={()=> setShowPassword(!showPassword)}  className=" cursor-pointer absolute bottom-[18px] right-5 hover:bg-gray-200 w-6 h-4 rounded-full"/>}
                   <label
                     htmlFor="password"
                     className="absolute px-2 text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
@@ -111,9 +116,11 @@ const Login = () => {
               </div>
 
               <button
+              disabled={isLoading}
                 type="submit"
-                className="bg-blue-600 px-5 py-1 w-full text-white rounded-md"
+                className="auth-btn bg-blue-600 px-5 py-1 w-full text-white rounded-md"
               >
+                {isLoading && <ClipLoader color="#fff" size={15} className=" mr-2"/>}
                 Sign in
               </button>
               <div className="text-blue-400 flex justify-center text-sm gap-4">

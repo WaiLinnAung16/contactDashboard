@@ -11,7 +11,6 @@ import { RxCross2 } from "react-icons/rx";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../components/Modal";
 import { useFormik } from "formik";
-import { userSchema } from "../validationschema";
 import { Toaster, toast } from "react-hot-toast";
 import {
   useGetSingleContactQuery,
@@ -20,6 +19,14 @@ import {
 import ToastAlert from "../components/ToastAlert";
 import { useSelector } from "react-redux";
 import Spinner from "../components/Spinner";
+import * as Yup from "yup";
+
+const userSchema = Yup.object().shape({
+  name: Yup.string().min(3).max(50),
+  phone: Yup.string(),
+  email: Yup.string().email(),
+  address: Yup.string(),
+});
 
 const Update = () => {
   const { id } = useParams();
@@ -28,22 +35,24 @@ const Update = () => {
   const [profileImg, setProfileImg] = useState("");
   const { token } = useSelector((store) => store.authSlice);
 
-  const [updateContact] = useUpdateContactMutation();
+  const [updateContact, { isLoading: isUpdateLoading }] =
+    useUpdateContactMutation();
   const { data: contact, isLoading } = useGetSingleContactQuery({ id, token });
   const [data, setData] = useState({});
-  console.log(data);
+  // console.log(contact?.contact);
 
   useEffect(() => {
     setData(contact?.contact);
   }, [contact]);
 
   // formik
+
   const formik = useFormik({
     initialValues: {
-      name: data?.name,
-      phone: data?.phone,
-      email: data?.email,
-      address: data?.address,
+      name: "",
+      phone: "",
+      email: "",
+      address: "",
     },
 
     validationSchema: userSchema,
@@ -65,10 +74,6 @@ const Update = () => {
     return <Spinner />;
   }
 
-  console.log(formik.values);
-
-  // console.log(formik.errors);
-  // console.log(formik.touched);
   return (
     <>
       <Toaster position="bottom-center" reverseOrder={false} />
@@ -118,14 +123,7 @@ const Update = () => {
               form="create-form"
               type="submit"
               className="md:self-end md:m-0 self-center mt-5 btn"
-              disabled={
-                formik.values.name ||
-                formik.values.phone ||
-                formik.values.email ||
-                formik.values.address
-                  ? false
-                  : true
-              }
+              disabled={isUpdateLoading ? true : false}
             >
               Save
             </button>
@@ -141,7 +139,7 @@ const Update = () => {
                   <input
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values?.name}
+                    defaultValue={data?.name}
                     type="text"
                     id="name"
                     name="name"
@@ -177,7 +175,7 @@ const Update = () => {
                   <input
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values?.phone}
+                    defaultValue={data?.phone}
                     type="text"
                     id="phone"
                     name="phone"
@@ -213,7 +211,7 @@ const Update = () => {
                   <input
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values?.email}
+                    defaultValue={data?.email}
                     type="text"
                     id="email"
                     name="email"
@@ -249,7 +247,7 @@ const Update = () => {
                   <input
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values?.address}
+                    defaultValue={data?.address}
                     type="text"
                     id="address"
                     name="address"
