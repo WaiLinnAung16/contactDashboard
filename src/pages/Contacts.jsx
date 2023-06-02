@@ -46,10 +46,10 @@ const Contacts = () => {
           <thead className="">
             <tr>
               <th></th>
-              <th className="text-start">Name</th>
-              <th className="text-start">Email</th>
-              <th className="text-start">Phone</th>
-              <th className="text-start">Address</th>
+              <th className="text-start ">Name</th>
+              <th className="text-start md:visible invisible">Email</th>
+              <th className="text-start  md:visible invisible">Phone</th>
+              <th className="text-start  md:visible invisible">Address</th>
               <th></th>
             </tr>
           </thead>
@@ -79,11 +79,11 @@ const Contacts = () => {
                       </div>
                     </td>
                     <td className="py-3">{contact.name}</td>
-                    <td className="py-3">
+                    <td className="py-3  md:visible invisible">
                       {contact.email ? contact.email : "example@gmail.com"}
                     </td>
-                    <td className="py-3">{contact.phone}</td>
-                    <td className="py-3">
+                    <td className="py-3  md:visible invisible">{contact.phone}</td>
+                    <td className="py-3  md:visible invisible">
                       {contact.address ? contact.address : "Myanmar"}
                     </td>
                     <td>
