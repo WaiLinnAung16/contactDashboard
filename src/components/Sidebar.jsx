@@ -49,11 +49,6 @@ const Sidebar = ({ sideBarToggle, toggleSidebar }) => {
           </NavLink>
         </ul>
       </div>
-      <div
-        className={`min-h-screen w-full bg-neutral-500/90 lg:hidden ${
-          sideBarToggle ? "absolute top-0 z-20" : "hidden"
-        }`}
-      ></div>
     </>
   );
 };

@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 
 const Dashboard = () => {
-  const [sideBarToggle, setSideBarToggle] = useState(true);
+  const [sideBarToggle, setSideBarToggle] = useState(false);
   const toggleSidebar = () => {
     setSideBarToggle((show) => !show);
   };

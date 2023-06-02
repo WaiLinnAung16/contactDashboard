@@ -21,7 +21,7 @@ const Header = ({ toggleSidebar }) => {
     setSearch((pre) => !pre);
   };
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const nav = useNavigate();
 
@@ -29,7 +29,6 @@ const Header = ({ toggleSidebar }) => {
   const token = Cookies.get("token");
 
   const [userToggle, setUserToggle] = useState(false);
-
 
   const [logout] = useLogoutMutation();
 
@@ -68,7 +67,7 @@ const Header = ({ toggleSidebar }) => {
               </button>
 
               <input
-                onChange={(e)=> dispatch(setSearchTerm(e.target.value))}
+                onChange={(e) => dispatch(setSearchTerm(e.target.value))}
                 className=" bg-transparent outline-none placeholder:text-gray-400 w-full  focus:bg-white"
                 type="text"
                 name=""
@@ -106,7 +105,7 @@ const Header = ({ toggleSidebar }) => {
           </div>
 
           <div
-            className="w-10 h-10 bg-blue-700 text-white font-semibold text-md rounded-full flex justify-center items-center"
+            className="w-10 h-10 bg-blue-700 text-white font-semibold text-md rounded-full flex justify-center items-center cursor-pointer"
             onClick={() => setUserToggle((pre) => !pre)}
           >
             {user.name.split("")[0].toUpperCase()}
@@ -116,7 +115,7 @@ const Header = ({ toggleSidebar }) => {
       <div
         className={`absolute ${
           userToggle ? "block" : "hidden"
-        } bg-gray-200/80  w-[400px] top-[70px] right-2 rounded-xl z-50 px-1 py-1 border-4 border-gray-200/50 shadow-xl`}
+        } bg-gray-200/80 w-[90%] left-5 md:w-[400px] top-[70px] md:right-2 rounded-xl z-50 px-1 py-1 border-4 border-gray-200/50 shadow-xl`}
       >
         <div className=" flex flex-col gap-1">
           <div className="flex items-center gap-10 bg-gray-50/80 p-6 rounded-t-md">
