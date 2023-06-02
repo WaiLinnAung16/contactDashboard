@@ -40,10 +40,10 @@ const Update = () => {
   // formik
   const formik = useFormik({
     initialValues: {
-      name: "",
-      phone: "",
-      email: "",
-      address: "",
+      name: data?.name,
+      phone: data?.phone,
+      email: data?.email,
+      address: data?.address,
     },
 
     validationSchema: userSchema,
@@ -68,6 +68,8 @@ const Update = () => {
       <Spinner/>
     )
   }
+
+  console.log(formik.values);
 
   // console.log(formik.errors);
   // console.log(formik.touched);
@@ -143,7 +145,7 @@ const Update = () => {
                   <input
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    defaultValue={data?.name}
+                    value={formik.values?.name}
                     type="text"
                     id="name"
                     name="name"
@@ -179,7 +181,7 @@ const Update = () => {
                   <input
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    defaultValue={data?.phone}
+                    value={formik.values?.phone}
                     type="text"
                     id="phone"
                     name="phone"
@@ -215,7 +217,7 @@ const Update = () => {
                   <input
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    defaultValue={data?.email}
+                    value={formik.values?.email}
                     type="text"
                     id="email"
                     name="email"
@@ -251,7 +253,7 @@ const Update = () => {
                   <input
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    defaultValue={data?.address}
+                    value={formik.values?.address}
                     type="text"
                     id="address"
                     name="address"
