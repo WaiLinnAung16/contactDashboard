@@ -1,16 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlinePlus, AiOutlineMail, AiOutlinePhone } from "react-icons/ai";
 import { FaRegAddressCard } from "react-icons/fa";
 import { BsArrowLeft, BsQuestionCircle } from "react-icons/bs";
 import { BiTrash } from "react-icons/bi";
-import { RxCross2 } from "react-icons/rx";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   useDeleteContactMutation,
   useGetSingleContactQuery,
 } from "../redux/api/contactApi";
 import DeleteModal from "../components/DeleteModal";
-import { Toaster } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
 import Spinner from "../components/Spinner";
 
@@ -18,7 +17,8 @@ const Detail = () => {
   const { id } = useParams();
   const { token } = useSelector((store) => store.authSlice);
   const { data: contact, isLoading } = useGetSingleContactQuery({ id, token });
-  const [deleteContact] = useDeleteContactMutation();
+  const [deleteContact, { isLoading: isDeleteLoading }] =
+    useDeleteContactMutation();
 
   const navigate = useNavigate();
 
@@ -41,6 +41,18 @@ const Detail = () => {
     return <Spinner />;
   }
 
+  //delete contact
+  const deleteContactHandler = async (id) => {
+    const { data } = await deleteContact({ id, token });
+    console.log(data);
+    if (data?.success) {
+      setToggleDelModal(!toggleDelModal);
+      navigate("/");
+    }
+  };
+
+  
+
   return (
     <>
       <Toaster position="bottom-center" reverseOrder={false} />
@@ -48,7 +60,7 @@ const Detail = () => {
         <DeleteModal
           toggleDelModal={toggleDelModal}
           setToggleDelModal={setToggleDelModal}
-          deleteContact={deleteContact}
+          deleteContactHandler={deleteContactHandler}
           id={id}
         />
       )}

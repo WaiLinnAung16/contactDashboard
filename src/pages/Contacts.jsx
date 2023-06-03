@@ -8,7 +8,9 @@ import { BiEditAlt, BiTrash } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getContacts } from "../redux/services/contactSlice";
+import { AiOutlineUser } from "react-icons/ai";
 import Spinner from "../components/Spinner";
+import DeleteModal from "../components/DeleteModal";
 
 const Contacts = () => {
   const token = Cookies.get("token");
@@ -37,8 +39,17 @@ const Contacts = () => {
   if (!data?.contacts?.data.length) {
     return (
       <div className=" flex flex-col gap-5 justify-center items-center h-screen">
-        <h1 className=" text-2xl font-medium">There is no contact</h1>
-        <button onClick={() => navigate(`/create`)} className=" btn">
+        <img
+          className=" w-[250px]"
+          src="https://ssl.gstatic.com/social/contactsui/images/emptycontacts/emptycontacts_animation_cell4.png"
+          alt=""
+        />
+        <h1 className=" text-lg">No contacts yet</h1>
+        <button
+          onClick={() => navigate(`/create`)}
+          className=" flex gap-2 items-center text-sm text-blue-500 font-medium rounded-md px-4 py-2 hover:bg-blue-50"
+        >
+          <AiOutlineUser className=" text-lg" />
           Create contact
         </button>
       </div>
@@ -71,41 +82,54 @@ const Contacts = () => {
                 return (
                   <tr
                     key={contact.id}
-                    onClick={() => navigate(`/detail/${contact.id}`)}
-                    className="transition-all duration-300 group/item hover:bg-gray-100 cursor-pointer"
+                    onClick={(e) => {
+                      if (e.target.classList.contains("row")) {
+                        navigate(`/detail/${contact.id}`);
+                      }
+                    }}
+                    className="row transition-all duration-300 group/item hover:bg-gray-100 cursor-pointer"
                   >
-                    <td className="py-3 mr-3 md:m-0 flex justify-center">
-                      <h1 className="w-[35px] h-[35px] bg-blue-700 text-white flex justify-center items-center rounded-full">
+                    <td className="row py-3 mr-3 md:m-0 flex justify-center">
+                      <h1 className="row w-[35px] h-[35px] bg-blue-700 text-white flex justify-center items-center rounded-full">
                         {contact.name.split("")[0].toUpperCase()}
                       </h1>
                     </td>
-                    <td className="py-3">{contact.name}</td>
-                    <td className="py-3 invisible md:visible">
+                    <td className="row py-3">{contact.name}</td>
+                    <td className="row py-3 invisible md:visible">
                       {contact.email ? contact.email : "example@gmail.com"}
                     </td>
-                    <td className="py-3 invisible md:visible">
+                    <td className="row py-3 invisible md:visible">
                       {contact.phone}
                     </td>
-                    <td className="py-3 invisible md:visible">
+                    <td className="row py-3 invisible md:visible">
                       {contact.address ? contact.address : "Myanmar"}
                     </td>
-                    <td className="invisible md:visible">
+                    <td className="row invisible md:visible">
                       <div className="text-xl md:flex gap-5 items-center cursor-pointer hidden">
                         <BiEditAlt
                           onClick={(e) => {
-                            e.stopPropagation();
+                            // e.stopPropagation();
                             navigate(`/update/${contact.id}`);
                           }}
                           className=" edit-btn transition hover:opacity-80"
                         />
 
                         <BiTrash
-                          className=" transition hover:opacity-80"
+                          className="del-btn transition hover:opacity-80"
                           onClick={(e) => {
-                            e.stopPropagation();
-                            deleteHandler(contact.id);
+                            // e.stopPropagation();
+                            // deleteHandler(contact.id);
+                            setToggleModal(!toggleModel);
                           }}
                         />
+                        {toggleModel && (
+                          <DeleteModal
+                            toggleDelModal={toggleModel}
+                            setToggleDelModal={setToggleModal}
+                            deleteContactHandler={deleteHandler}
+                            id={contact.id}
+                          />
+                        )}
                       </div>
                     </td>
                   </tr>

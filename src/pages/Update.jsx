@@ -7,7 +7,6 @@ import {
 } from "react-icons/ai";
 import { FaRegAddressCard } from "react-icons/fa";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
-import { RxCross2 } from "react-icons/rx";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../components/Modal";
 import { useFormik } from "formik";
@@ -16,7 +15,6 @@ import {
   useGetSingleContactQuery,
   useUpdateContactMutation,
 } from "../redux/api/contactApi";
-import ToastAlert from "../components/ToastAlert";
 import { useSelector } from "react-redux";
 import Spinner from "../components/Spinner";
 import * as Yup from "yup";
@@ -62,7 +60,6 @@ const Update = () => {
       const { data } = await updateContact({ id, userData: values, token });
       console.log(data);
       if (data?.success) {
-        toast.custom(<ToastAlert title={"update success"} />);
         setTimeout(() => {
           actions.resetForm();
           navigate(`/detail/${id}`);

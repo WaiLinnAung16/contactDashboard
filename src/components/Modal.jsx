@@ -34,7 +34,7 @@ const Modal = ({ toggleModal, setToggleModal, setProfileImg }) => {
   return (
     <div
       onClick={closeModal}
-      className="backdrop select-none bg-[#00000060] flex justify-center items-center fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0  max-h-full"
+      className="backdrop select-none bg-[#00000060] flex justify-center items-center h-screen fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0  max-h-full"
     >
       <div className="relative w-full max-w-2xl max-h-full ">
         <div className="relative bg-white rounded-lg shadow ">

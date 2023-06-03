@@ -13,7 +13,6 @@ import Modal from "../components/Modal";
 import { useFormik } from "formik";
 import { useCreateContactMutation } from "../redux/api/contactApi";
 import { Toaster, toast } from "react-hot-toast";
-import ToastAlert from "../components/ToastAlert";
 import { useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -46,7 +45,6 @@ const Create = () => {
       const { data } = await createContact({ userData: values, token });
       // console.log(data);
       if (data?.success) {
-        toast.custom(<ToastAlert title={"create user success"} />);
         setTimeout(() => {
           actions.resetForm();
           navigate("/");
@@ -179,7 +177,7 @@ const Create = () => {
             </div>
             <div className=" flex items-start gap-8">
               <div className="mt-4">
-                <AiOutlineMail className=" text-xl text-gray-500" />
+                <AiOutlineMail className=" text-xl text-gray-400" />
               </div>
               <div className=" flex flex-col gap-2  w-[300px] md:w-[500px]">
                 <div className="relative">
@@ -215,7 +213,7 @@ const Create = () => {
             </div>
             <div className=" flex items-start gap-8">
               <div className="mt-4">
-                <FaRegAddressCard className=" text-xl text-gray-500" />
+                <FaRegAddressCard className=" text-xl text-gray-400" />
               </div>
               <div className="w-[300px] md:w-[500px]">
                 <div className="relative">
