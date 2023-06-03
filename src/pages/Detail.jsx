@@ -9,7 +9,7 @@ import {
   useGetSingleContactQuery,
 } from "../redux/api/contactApi";
 import DeleteModal from "../components/DeleteModal";
-import { Toaster, toast } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
 import Spinner from "../components/Spinner";
 
@@ -44,14 +44,15 @@ const Detail = () => {
   //delete contact
   const deleteContactHandler = async (id) => {
     const { data } = await deleteContact({ id, token });
-    console.log(data);
+
     if (data?.success) {
       setToggleDelModal(!toggleDelModal);
-      navigate("/");
+      setTimeout(() => {
+        navigate("/");
+        toast.success("delete success");
+      }, 3000);
     }
   };
-
-  
 
   return (
     <>
