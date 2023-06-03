@@ -34,13 +34,15 @@ const Contacts = () => {
     return <Spinner />;
   }
 
-  if(!data?.contacts?.data.length){
+  if (!data?.contacts?.data.length) {
     return (
       <div className=" flex flex-col gap-5 justify-center items-center h-screen">
         <h1 className=" text-2xl font-medium">There is no contact</h1>
-        <button onClick={()=> navigate(`/create`)} className=" btn">Create contact</button>
+        <button onClick={() => navigate(`/create`)} className=" btn">
+          Create contact
+        </button>
       </div>
-    )
+    );
   }
 
   return (
@@ -72,7 +74,6 @@ const Contacts = () => {
                     onClick={() => navigate(`/detail/${contact.id}`)}
                     className="transition-all duration-300 group/item hover:bg-gray-100 cursor-pointer"
                   >
-                    
                     <td className="py-3 flex justify-center">
                       <h1 className="w-[35px] h-[35px] bg-blue-700 text-white flex justify-center items-center rounded-full">
                         {contact.name.split("")[0].toUpperCase()}
@@ -101,9 +102,8 @@ const Contacts = () => {
                         <BiTrash
                           className=" transition hover:opacity-80"
                           onClick={(e) => {
-                            e.stopPropagation()
-                            deleteHandler(contact.id)
-                        
+                            e.stopPropagation();
+                            deleteHandler(contact.id);
                           }}
                         />
                       </div>
