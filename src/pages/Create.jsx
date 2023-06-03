@@ -17,7 +17,7 @@ import ToastAlert from "../components/ToastAlert";
 import { useSelector } from "react-redux";
 import * as Yup from "yup";
 
- const userSchema = Yup.object().shape({
+const userSchema = Yup.object().shape({
   name: Yup.string().min(3).max(50).required(),
   phone: Yup.string().required(),
   email: Yup.string().email().required(),
@@ -27,7 +27,7 @@ import * as Yup from "yup";
 const Create = () => {
   const [toggleModal, setToggleModal] = useState(false);
   const navigate = useNavigate();
-  const [createContact, {isLoading}] = useCreateContactMutation();
+  const [createContact, { isLoading }] = useCreateContactMutation();
   const [profileImg, setProfileImg] = useState("");
   const { token } = useSelector((store) => store.authSlice);
 
@@ -49,9 +49,8 @@ const Create = () => {
         toast.custom(<ToastAlert title={"create user success"} />);
         setTimeout(() => {
           actions.resetForm();
-          navigate('/')
+          navigate("/");
         }, 1000);
-        
       }
     },
   });
@@ -66,7 +65,7 @@ const Create = () => {
         />
       )}
       <div>
-        <div className="border-b top-20 bg-white fixed w-full z-10">
+        <div className="border-b top-20 bg-white fixed w-full z-20">
           <div className="flex flex-col w-full  md:w-[50%] p-5">
             <div className=" flex flex-col md:flex-row items-center gap-5 md:gap-10 ">
               <button
@@ -99,11 +98,7 @@ const Create = () => {
               form="create-form"
               type="submit"
               className="md:self-end md:m-0 self-center mt-5 btn"
-              disabled={
-                isLoading
-                  ? true
-                  : false
-              }
+              disabled={isLoading ? true : false}
             >
               Save
             </button>

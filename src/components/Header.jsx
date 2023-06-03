@@ -12,7 +12,7 @@ import { useLogoutMutation } from "../redux/api/contactApi";
 import { removeUser } from "../redux/services/authSlice";
 import { setSearchTerm } from "../redux/services/contactSlice";
 
-const Header = ({ toggleSidebar }) => {
+const Header = ({ togglerClick }) => {
   const inputRef = useRef(null);
   const [search, setSearch] = useState(false);
 
@@ -41,11 +41,11 @@ const Header = ({ toggleSidebar }) => {
 
   return (
     <>
-      <div className="flex items-center gap-6 py-2 sticky top-0 px-5 shadow">
+      <div className="flex items-center gap-6 py-2 sticky top-0 px-5 shadow z-50">
         <div className="w-[240px] md:w-[300px]">
           <div className="flex items-center gap-2">
             <div
-              onClick={toggleSidebar}
+              onClick={togglerClick}
               className="flex justify-center items-center transition w-10 h-10 rounded-full hover:bg-gray-300/50 cursor-pointer"
             >
               <RxHamburgerMenu size={20} className="  " />

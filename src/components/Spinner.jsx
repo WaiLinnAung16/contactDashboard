@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 
-const Spinner = ({isLoading}) => {
-
+const Spinner = ({ isLoading }) => {
   return (
-    <div className=' flex justify-center items-center h-screen bg-[#00000020]'>
+    <div className=" flex justify-center items-center h-screen bg-[#00000020]">
       <ClipLoader
         color={"#000"}
         loading={isLoading}
@@ -13,7 +12,7 @@ const Spinner = ({isLoading}) => {
         data-testid="loader"
       />
     </div>
-  )
-}
+  );
+};
 
-export default Spinner
+export default Spinner;

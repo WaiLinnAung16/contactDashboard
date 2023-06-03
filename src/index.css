@@ -19,13 +19,13 @@ html {
 }
 
 .btn {
-  @apply px-5 py-2 text-white bg-blue-500 rounded-md text-sm font-medium hover:bg-blue-700 hover:shadow-md;
+  @apply px-4 py-2 text-white bg-blue-700 rounded-md font-medium hover:bg-blue-500 hover:shadow-md;
 }
 
 .btn:disabled {
   opacity: 0.8;
 }
 
-.auth-btn:disabled{
+.auth-btn:disabled {
   opacity: 0.8;
 }

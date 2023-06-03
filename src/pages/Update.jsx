@@ -20,6 +20,7 @@ import ToastAlert from "../components/ToastAlert";
 import { useSelector } from "react-redux";
 import Spinner from "../components/Spinner";
 import * as Yup from "yup";
+import { BsArrowLeft } from "react-icons/bs";
 
 const userSchema = Yup.object().shape({
   name: Yup.string().min(3).max(50),
@@ -85,14 +86,14 @@ const Update = () => {
         />
       )}
       <div>
-        <div className="border-b top-20 bg-white fixed w-full z-10">
-          <div className="flex flex-col w-full  md:w-[50%] p-5">
-            <div className=" flex flex-col md:flex-row items-center gap-5 md:gap-10 ">
+        <div className="border-b top-16 bg-white fixed w-full z-20">
+          <div className="flex flex-col w-full md:w-[50%] p-5">
+            <div className="flex flex-col items-center md:flex-row gap-5">
               <button
                 className=" self-start text-xl cursor-pointer"
                 onClick={() => navigate(-1)}
               >
-                <RxCross2 />
+                <BsArrowLeft />
               </button>
               {profileImg ? (
                 <img
@@ -107,7 +108,7 @@ const Update = () => {
                   <MdOutlineAddPhotoAlternate className=" text-3xl" />
                 </div>
               )}
-              <div className=" space-y-3">
+              <div className="flex flex-col items-center md:items-start gap-2">
                 <h1 className=" text-xl font-medium text-gray-600">
                   {contact?.contact?.name}
                 </h1>

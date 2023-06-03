@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AiOutlinePlus, AiOutlineMail, AiOutlinePhone } from "react-icons/ai";
 import { FaRegAddressCard } from "react-icons/fa";
-import { BsQuestionCircle } from "react-icons/bs";
+import { BsArrowLeft, BsQuestionCircle } from "react-icons/bs";
 import { BiTrash } from "react-icons/bi";
 import { RxCross2 } from "react-icons/rx";
 import { useNavigate, useParams } from "react-router-dom";
@@ -52,15 +52,15 @@ const Detail = () => {
           id={id}
         />
       )}
-      <div className=" md:mx-20">
-        <div className="border-b top-20 bg-white w-full z-10">
-          <div className=" w-full p-5 flex justify-between flex-col md:flex-row">
+      <div>
+        <div className="border-b top-20 bg-white w-full z-10 ">
+          <div className=" w-full lg:w-[70%] p-5 flex justify-between flex-col md:flex-row">
             <div className=" flex flex-col md:flex-row items-center gap-5 md:gap-10 ">
               <button
                 className=" self-start text-xl cursor-pointer"
                 onClick={() => navigate(-1)}
               >
-                <RxCross2 />
+                <BsArrowLeft />
               </button>
               <img
                 className=" w-[150px] h-[150px] rounded-full"
@@ -79,25 +79,25 @@ const Detail = () => {
                 </button>
               </div>
             </div>
-            <div className=" flex items-center gap-5 self-center mr-5 md:self-end mt-5">
-              <button
-                onClick={() => setToggleDelModal(!toggleDelModal)}
-                className="text-lg transition hover:opacity-70"
-              >
-                <BiTrash className="hidden md:inline"/>
-              </button>
+            <div className=" flex justify-center items-center gap-3 mt-5 md:self-end">
               <button
                 onClick={() => navigate(`/update/${id}`)}
                 className=" btn"
               >
                 Edit
               </button>
+              <button
+                onClick={() => setToggleDelModal(!toggleDelModal)}
+                className="text-lg text-red-500 border border-red-500 px-4 py-2 rounded-md transition hover:bg-red-500 hover:text-white hover:opacity-70"
+              >
+                <BiTrash />
+              </button>
             </div>
           </div>
         </div>
         <hr />
         <div className="m-5 md:m-10 flex flex-col md:flex-row md:items-center items-start gap-10">
-          <div className=" border rounded-lg p-4 flex-[3] w-full">
+          <div className=" border rounded-lg p-4 flex-[2] w-full">
             <h4 className=" text-lg mb-4 font-medium text-gray-500">
               Contact details
             </h4>

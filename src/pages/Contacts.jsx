@@ -47,18 +47,18 @@ const Contacts = () => {
 
   return (
     <>
-      <div className="text-sm text-gray-500">
-        <h1 className="my-5 pl-5">
+      <div className="text-sm text-gray-500 overflow-hidden px-5">
+        <h1 className="my-5">
           Contacts<span>({data?.contacts?.data.length})</span>
         </h1>
         <table className="w-full">
-          <thead className="">
+          <thead>
             <tr>
               <th></th>
-              <th className="text-start ">Name</th>
-              <th className="text-start md:visible invisible">Email</th>
-              <th className="text-start  md:visible invisible">Phone</th>
-              <th className="text-start  md:visible invisible">Address</th>
+              <th className="text-start">Name</th>
+              <th className="text-start invisible md:visible">Email</th>
+              <th className="text-start invisible md:visible">Phone</th>
+              <th className="text-start invisible md:visible">Address</th>
               <th></th>
             </tr>
           </thead>
@@ -74,22 +74,22 @@ const Contacts = () => {
                     onClick={() => navigate(`/detail/${contact.id}`)}
                     className="transition-all duration-300 group/item hover:bg-gray-100 cursor-pointer"
                   >
-                    <td className="py-3 flex justify-center">
+                    <td className="py-3 mr-3 md:m-0 flex justify-center">
                       <h1 className="w-[35px] h-[35px] bg-blue-700 text-white flex justify-center items-center rounded-full">
                         {contact.name.split("")[0].toUpperCase()}
                       </h1>
                     </td>
                     <td className="py-3">{contact.name}</td>
-                    <td className="py-3  md:visible invisible">
+                    <td className="py-3 invisible md:visible">
                       {contact.email ? contact.email : "example@gmail.com"}
                     </td>
-                    <td className="py-3  md:visible invisible">
+                    <td className="py-3 invisible md:visible">
                       {contact.phone}
                     </td>
-                    <td className="py-3  md:visible invisible">
+                    <td className="py-3 invisible md:visible">
                       {contact.address ? contact.address : "Myanmar"}
                     </td>
-                    <td className="invisible md:visible ">
+                    <td className="invisible md:visible">
                       <div className="text-xl md:flex gap-5 items-center cursor-pointer hidden">
                         <BiEditAlt
                           onClick={(e) => {
