@@ -9,16 +9,15 @@ import {
   useGetSingleContactQuery,
 } from "../redux/api/contactApi";
 import DeleteModal from "../components/DeleteModal";
-import toast, { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
 import Spinner from "../components/Spinner";
+import { Toaster, toast } from "react-hot-toast";
 
 const Detail = () => {
   const { id } = useParams();
   const { token } = useSelector((store) => store.authSlice);
   const { data: contact, isLoading } = useGetSingleContactQuery({ id, token });
-  const [deleteContact, { isLoading: isDeleteLoading }] =
-    useDeleteContactMutation();
+  const [deleteContact] = useDeleteContactMutation();
 
   const navigate = useNavigate();
 
@@ -43,15 +42,16 @@ const Detail = () => {
 
   //delete contact
   const deleteContactHandler = async (id) => {
-    const { data } = await deleteContact({ id, token });
+    setToggleDelModal(!toggleDelModal);
+    await toast.promise(deleteContact({ id, token }), {
+      loading: "Working...",
+      success: "Successfully deleted",
+      error: "Something wrong!",
+    });
 
-    if (data?.success) {
-      setToggleDelModal(!toggleDelModal);
-      setTimeout(() => {
-        navigate("/");
-        toast.success("delete success");
-      }, 3000);
-    }
+    setTimeout(() => {
+      navigate("/");
+    }, 900);
   };
 
   return (

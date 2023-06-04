@@ -131,7 +131,7 @@ const Update = () => {
         <form id="create-form" onSubmit={formik.handleSubmit}>
           <div className=" m-10 space-y-8 mt-[430px] md:mt-[280px]">
             <div className=" flex items-start gap-8">
-              <AiOutlineUser className=" mt-4 text-xl text-gray-400" />
+              <AiOutlineUser className=" mt-4 text-xl text-gray-700" />
               <div className="w-[300px] md:w-[500px]">
                 <div className="relative">
                   <input
@@ -166,7 +166,7 @@ const Update = () => {
             </div>
             <div className=" flex items-start gap-8">
               <div className=" mt-4">
-                <AiOutlinePhone className=" text-xl text-gray-400" />
+                <AiOutlinePhone className=" text-xl text-gray-700" />
               </div>
               <div className=" flex flex-col w-[300px] md:w-[500px] gap-2">
                 <div className="relative">
@@ -202,7 +202,7 @@ const Update = () => {
             </div>
             <div className=" flex items-start gap-8">
               <div className="mt-4">
-                <AiOutlineMail className=" text-xl text-gray-400" />
+                <AiOutlineMail className=" text-xl text-gray-700" />
               </div>
               <div className=" flex flex-col gap-2  w-[300px] md:w-[500px]">
                 <div className="relative">
@@ -238,7 +238,7 @@ const Update = () => {
             </div>
             <div className=" flex items-start gap-8">
               <div className="mt-4">
-                <FaRegAddressCard className=" text-xl text-gray-400" />
+                <FaRegAddressCard className=" text-xl text-gray-700" />
               </div>
               <div className="w-[300px] md:w-[500px]">
                 <div className="relative">

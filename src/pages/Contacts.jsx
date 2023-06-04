@@ -22,11 +22,10 @@ const Contacts = () => {
 
   const [deleteContact] = useDeleteContactMutation();
 
+  const [toggleModel, setToggleModal] = useState(false);
   const deleteHandler = async (id) => {
     const data = await deleteContact({ id, token });
   };
-
-  const [toggleModel, setToggleModal] = useState(false);
 
   useEffect(() => {
     dispatch(getContacts(data?.contacts?.data));
