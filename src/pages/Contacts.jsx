@@ -20,11 +20,8 @@ const Contacts = () => {
   const dispatch = useDispatch();
   const { contacts } = useSelector((store) => store.contactSlice);
   const { searchTerm } = useSelector((store) => store.contactSlice);
-
   const [deleteContact] = useDeleteContactMutation();
-
   const [toggleModel, setToggleModal] = useState(false);
-
 
   const deleteContactHandler = async (id) => {
     setToggleModal(!toggleModel);
@@ -37,7 +34,7 @@ const Contacts = () => {
     // setTimeout(() => {
     //   navigate("/");
     // }, 900);
-
+  };
 
   useEffect(() => {
     dispatch(getContacts(data?.contacts?.data));
@@ -153,6 +150,6 @@ const Contacts = () => {
       </div>
     </>
   );
-}};
+};
 
 export default Contacts;
