@@ -21,15 +21,18 @@ const Contacts = () => {
   const { contacts } = useSelector((store) => store.contactSlice);
   const { searchTerm } = useSelector((store) => store.contactSlice);
   const [deleteContact] = useDeleteContactMutation();
-  const [toggleModel, setToggleModal] = useState(false);
+
+  const [selectedContactId, setSelectedContactId] = useState(null);
 
   const deleteContactHandler = async (id) => {
-    setToggleModal(!toggleModel);
+    
     await toast.promise(deleteContact({ id, token }), {
       loading: "Working...",
       success: "Successfully deleted",
       error: "Something wrong!",
     });
+
+    setSelectedContactId(null);
 
     // setTimeout(() => {
     //   navigate("/");
@@ -125,19 +128,19 @@ const Contacts = () => {
                           className="del-btn transition hover:opacity-80"
                           onClick={(e) => {
                             console.log(contact.id);
-                            setToggleModal(!toggleModel);
+                            setSelectedContactId(contact.id);
                           }}
                         />
                         <Toaster
                           position="bottom-center"
                           reverseOrder={false}
                         />
-                        {toggleModel && (
+                        {selectedContactId && (
                           <DeleteModal
-                            toggleDelModal={toggleModel}
-                            setToggleDelModal={setToggleModal}
+                            toggleDelModal={true}
+                            setToggleDelModal={setSelectedContactId}
                             deleteContactHandler={deleteContactHandler}
-                            id={contact.id}
+                            id={selectedContactId}
                           />
                         )}
                       </div>
