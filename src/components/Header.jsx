@@ -72,7 +72,7 @@ const Header = ({ togglerClick }) => {
         </div>
 
         <div className="flex justify-end items-center gap-3 md:justify-between w-full">
-          <div className="px-4 py-2 bg-gray-200 rounded-lg lg:w-[40%] h-12 hidden md:w-[400px] md:block focus-within:bg-white focus-within:shadow-md focus-within:border-none focus-within:rounded-t-lg focus-within:rounded-b-none">
+          <div className="px-4 py-2 bg-gray-200 rounded-lg lg:w-[60%] h-12 hidden md:w-[400px] md:block focus-within:bg-white focus-within:shadow-md focus-within:border-none focus-within:rounded-t-lg focus-within:rounded-b-none">
             <form className=" flex gap-2  items-center " onSubmit={handleSubmitPc}>
               <button className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-300">
                 <AiOutlineSearch size={20} />
@@ -80,7 +80,7 @@ const Header = ({ togglerClick }) => {
 
               <input
                 ref={inputRefPc}
-                className=" bg-transparent outline-none placeholder:text-gray-400 w-full  focus:bg-white"
+                className=" bg-transparent outline-none placeholder:text-gray-400/60 w-full  focus:bg-white"
                 type="text"
                 name=""
                 id=""
@@ -92,10 +92,10 @@ const Header = ({ togglerClick }) => {
           <div
             className={`${
               search ? "flex" : "hidden"
-            } absolute gap-5 px-2 py-2 bg-gray-200 rounded-lg right-16 top-1 h-12 md:hidden focus-within:bg-white focus-within:shadow-md focus-within:border-none focus-within:rounded-t-xl focus-within:rounded-b-none`}
+            } absolute min-w-[290px] gap-5 px-2 py-2 bg-gray-200 rounded-lg left-2 top-1 h-12 md:hidden focus-within:bg-white focus-within:shadow-md focus-within:border-none focus-within:rounded-t-xl focus-within:rounded-b-none`}
           >
             <div className={`flex gap-5 items-center `}>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} className="flex items-center gap-6">
               <button
                 onClick={() => setSearch((pre) => !pre)}
                 className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-300"
