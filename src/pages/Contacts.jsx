@@ -24,7 +24,7 @@ const Contacts = () => {
   const [deleteContact] = useDeleteContactMutation();
 
   const [toggleModel, setToggleModal] = useState(false);
-<<<<<<< HEAD
+
 
   const deleteContactHandler = async (id) => {
     setToggleModal(!toggleModel);
@@ -38,7 +38,6 @@ const Contacts = () => {
     //   navigate("/");
     // }, 900);
 
-  
 
   useEffect(() => {
     dispatch(getContacts(data?.contacts?.data));
@@ -154,6 +153,6 @@ const Contacts = () => {
       </div>
     </>
   );
-};
+}};
 
 export default Contacts;
