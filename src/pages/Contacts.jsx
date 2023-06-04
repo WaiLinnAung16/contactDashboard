@@ -25,6 +25,7 @@ const Contacts = () => {
   const [toggleModel, setToggleModal] = useState(false);
   const deleteHandler = async (id) => {
     const data = await deleteContact({ id, token });
+    setToggleModal((pre) => !pre);
   };
 
   useEffect(() => {
