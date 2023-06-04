@@ -24,6 +24,7 @@ const Contacts = () => {
   const [deleteContact] = useDeleteContactMutation();
 
   const [toggleModel, setToggleModal] = useState(false);
+<<<<<<< HEAD
 
   const deleteContactHandler = async (id) => {
     setToggleModal(!toggleModel);
@@ -36,7 +37,8 @@ const Contacts = () => {
     // setTimeout(() => {
     //   navigate("/");
     // }, 900);
-  };
+
+  
 
   useEffect(() => {
     dispatch(getContacts(data?.contacts?.data));
