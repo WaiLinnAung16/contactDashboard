@@ -11,7 +11,6 @@ import { getContacts } from "../redux/services/contactSlice";
 import { AiOutlineUser } from "react-icons/ai";
 import Spinner from "../components/Spinner";
 import DeleteModal from "../components/DeleteModal";
-import { Toaster, toast } from "react-hot-toast";
 
 const Contacts = () => {
   const token = Cookies.get("token");
@@ -20,24 +19,14 @@ const Contacts = () => {
   const dispatch = useDispatch();
   const { contacts } = useSelector((store) => store.contactSlice);
   const { searchTerm } = useSelector((store) => store.contactSlice);
-
   const [deleteContact] = useDeleteContactMutation();
 
-  const [toggleModel, setToggleModal] = useState(false);
-
+  const [selectedContactId, setSelectedContactId] = useState(null);
 
   const deleteContactHandler = async (id) => {
-    setToggleModal(!toggleModel);
-    await toast.promise(deleteContact({ id, token }), {
-      loading: "Working...",
-      success: "Successfully deleted",
-      error: "Something wrong!",
-    });
-
-    // setTimeout(() => {
-    //   navigate("/");
-    // }, 900);
-
+    await deleteContact({ id, token });
+    setSelectedContactId(null);
+  };
 
   useEffect(() => {
     dispatch(getContacts(data?.contacts?.data));
@@ -126,21 +115,17 @@ const Contacts = () => {
 
                         <BiTrash
                           className="del-btn transition hover:opacity-80"
-                          onClick={(e) => {
-                            console.log(contact.id);
-                            setToggleModal(!toggleModel);
+                          onClick={() => {
+                            setSelectedContactId(contact.id);
                           }}
                         />
-                        <Toaster
-                          position="bottom-center"
-                          reverseOrder={false}
-                        />
-                        {toggleModel && (
+
+                        {selectedContactId && (
                           <DeleteModal
-                            toggleDelModal={toggleModel}
-                            setToggleDelModal={setToggleModal}
+                            toggleDelModal={true}
+                            setToggleDelModal={setSelectedContactId}
                             deleteContactHandler={deleteContactHandler}
-                            id={contact.id}
+                            id={selectedContactId}
                           />
                         )}
                       </div>
@@ -153,6 +138,6 @@ const Contacts = () => {
       </div>
     </>
   );
-}};
+};
 
 export default Contacts;
