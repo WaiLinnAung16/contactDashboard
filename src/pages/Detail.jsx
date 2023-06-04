@@ -6,6 +6,7 @@ import { BiTrash } from "react-icons/bi";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   useDeleteContactMutation,
+  useGetContactQuery,
   useGetSingleContactQuery,
 } from "../redux/api/contactApi";
 import DeleteModal from "../components/DeleteModal";
@@ -18,6 +19,7 @@ const Detail = () => {
   const { token } = useSelector((store) => store.authSlice);
   const { data: contact, isLoading } = useGetSingleContactQuery({ id, token });
   const [deleteContact] = useDeleteContactMutation();
+
 
   const navigate = useNavigate();
 

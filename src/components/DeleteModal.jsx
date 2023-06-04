@@ -1,6 +1,5 @@
-import React, { useRef } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+
 
 const DeleteModal = ({
   toggleDelModal,
@@ -35,7 +34,9 @@ const DeleteModal = ({
               >
                 Cancel
               </button>
-              <button className="del-btn btn" onClick={()=> deleteContactHandler(id)}>
+              <button className="del-btn btn" 
+              onClick={()=> deleteContactHandler(id)}
+              >
                 Delete
               </button>
             </div>

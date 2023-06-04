@@ -57,14 +57,15 @@ const Update = () => {
     validationSchema: userSchema,
 
     onSubmit: async (values, actions) => {
-      const { data } = await updateContact({ id, userData: values, token });
-      console.log(data);
-      if (data?.success) {
-        setTimeout(() => {
-          actions.resetForm();
-          navigate(`/detail/${id}`);
-        }, 1000);
-      }
+      await toast.promise(updateContact({ id, userData: values, token }), {
+        loading: "Working...",
+        success: "Update Contact Success",
+        error: "Somthing Wrong!",
+      });
+      setTimeout(() => {
+        actions.resetForm();
+        navigate(`/detail/${id}`);
+      }, 900);
     },
   });
 

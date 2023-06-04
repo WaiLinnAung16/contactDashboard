@@ -11,6 +11,7 @@ import { getContacts } from "../redux/services/contactSlice";
 import { AiOutlineUser } from "react-icons/ai";
 import Spinner from "../components/Spinner";
 import DeleteModal from "../components/DeleteModal";
+import { Toaster, toast } from "react-hot-toast";
 
 const Contacts = () => {
   const token = Cookies.get("token");
@@ -23,8 +24,18 @@ const Contacts = () => {
   const [deleteContact] = useDeleteContactMutation();
 
   const [toggleModel, setToggleModal] = useState(false);
-  const deleteHandler = async (id) => {
-    const data = await deleteContact({ id, token });
+
+  const deleteContactHandler = async (id) => {
+    setToggleModal(!toggleModel);
+    await toast.promise(deleteContact({ id, token }), {
+      loading: "Working...",
+      success: "Successfully deleted",
+      error: "Something wrong!",
+    });
+
+    // setTimeout(() => {
+    //   navigate("/");
+    // }, 900);
   };
 
   useEffect(() => {
@@ -107,7 +118,6 @@ const Contacts = () => {
                       <div className="text-xl md:flex gap-5 items-center cursor-pointer hidden">
                         <BiEditAlt
                           onClick={(e) => {
-                            // e.stopPropagation();
                             navigate(`/update/${contact.id}`);
                           }}
                           className=" edit-btn transition hover:opacity-80"
@@ -116,16 +126,19 @@ const Contacts = () => {
                         <BiTrash
                           className="del-btn transition hover:opacity-80"
                           onClick={(e) => {
-                            // e.stopPropagation();
-                            // deleteHandler(contact.id);
+                            console.log(contact.id);
                             setToggleModal(!toggleModel);
                           }}
+                        />
+                        <Toaster
+                          position="bottom-center"
+                          reverseOrder={false}
                         />
                         {toggleModel && (
                           <DeleteModal
                             toggleDelModal={toggleModel}
                             setToggleDelModal={setToggleModal}
-                            deleteContactHandler={deleteHandler}
+                            deleteContactHandler={deleteContactHandler}
                             id={contact.id}
                           />
                         )}
