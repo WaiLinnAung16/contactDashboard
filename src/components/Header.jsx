@@ -92,7 +92,7 @@ const Header = ({ togglerClick }) => {
           <div
             className={`${
               search ? "flex" : "hidden"
-            } absolute min-w-[290px] gap-5 px-2 py-2 bg-gray-200 rounded-lg left-2 top-1 h-12 md:hidden focus-within:bg-white focus-within:shadow-md focus-within:border-none focus-within:rounded-t-xl focus-within:rounded-b-none`}
+            } absolute gF:min-w-[100px] min-w-[295px] s8:min-w-[286px] se:min-w-[295px] i12p:min-w-[315px] ixr:min-w-[340px] gap-5 px-2 py-2 bg-gray-200 rounded-lg left-2 top-1 h-12 md:hidden focus-within:bg-white focus-within:shadow-md focus-within:border-none focus-within:rounded-t-xl focus-within:rounded-b-none`}
           >
             <div className={`flex gap-5 items-center `}>
               <form onSubmit={handleSubmit} className="flex items-center gap-6">
