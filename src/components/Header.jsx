@@ -129,10 +129,10 @@ const Header = ({ togglerClick }) => {
       <div
         className={`absolute ${
           userToggle ? "block" : "hidden"
-        } bg-gray-200 w-[90%] right-5 md:w-[400px] top-[70px] md:right-2 rounded-xl z-50 px-1 py-1 border-4 border-gray-200/50 shadow-xl`}
+        } bg-gray-200 w-[90%] right-5 md:w-[400px] top-[110px] md:right-2 rounded-xl z-50 px-1 py-1 border-4 border-gray-200/50 shadow-xl`}
       >
         <div className=" flex flex-col gap-1">
-          <div className="flex items-center gap-10 bg-gray-50/80 p-6 rounded-t-md">
+          <div className="flex items-center gap-5 bg-gray-50/80 p-6 rounded-t-md">
             <div className="w-14 h-14 bg-blue-700 text-white font-bold text-xl rounded-full flex justify-center items-center">
               {user.name.split("")[0].toUpperCase()}
             </div>
@@ -146,7 +146,7 @@ const Header = ({ togglerClick }) => {
           <div className=" border-b-2 py-3 bg-gray-50/70 rounded-b-md">
             <button
               onClick={logoutHandler}
-              className=" flex items-center gap-2 ml-[119px] px-4 py-1 bg-transparent border-2 w-fit border-black/50 rounded-lg tracking-tight transition hover:bg-gray-300/50"
+              className=" flex items-center gap-2 mx-auto px-4 py-1 bg-transparent border-2 w-fit border-black/50 rounded-lg tracking-tight transition hover:bg-gray-300/50"
             >
               <FiLogOut />
               <span>Sign out</span>
