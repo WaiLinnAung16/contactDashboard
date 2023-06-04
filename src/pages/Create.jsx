@@ -99,7 +99,7 @@ const Create = () => {
             <button
               form="create-form"
               type="submit"
-              className="md:self-end md:m-0 self-center mt-5 btn"
+              className="md:self-end md:m-0 self-center mt-5 text-sm px-7 py-2 bg-blue-700 text-white rounded-md"
               disabled={isLoading ? true : false}
             >
               Save
@@ -124,8 +124,8 @@ const Create = () => {
                       formik.errors.name &&
                       formik.touched.name &&
                       "border-red-500 text-red-500"
-                    } block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 border-neutral-600 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                    placeholder=" "
+                    } block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-md border-[1px] border-neutral-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    autoFocus
                   />
                   <label
                     htmlFor="name"
@@ -160,7 +160,7 @@ const Create = () => {
                       formik.errors.phone &&
                       formik.touched.phone &&
                       "border-red-500 text-red-500"
-                    } block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 border-neutral-600    focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    } block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-md border-[1px] border-neutral-500    focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                     placeholder=" "
                   />
                   <label
@@ -196,7 +196,7 @@ const Create = () => {
                       formik.errors.email &&
                       formik.touched.email &&
                       "border-red-500 text-red-500"
-                    } block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 border-neutral-600    focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    } block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-md border-[1px] border-neutral-500    focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                     placeholder=" "
                   />
                   <label
@@ -232,7 +232,7 @@ const Create = () => {
                       formik.errors.address &&
                       formik.touched.address &&
                       "border-red-500 text-red-500"
-                    } block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 border-neutral-600    focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    } block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-md border-[1px] border-neutral-500    focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                     placeholder=" "
                   />
                   <label

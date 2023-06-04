@@ -58,18 +58,18 @@ const Contacts = () => {
 
   return (
     <>
-      <div className="text-sm text-gray-500 overflow-hidden px-5">
-        <h1 className="my-5">
+      <div className="text-sm text-gray-700 overflow-hidden px-5">
+        <h1 className="text-center md:text-start my-5 text-lg">
           Contacts<span>({data?.contacts?.data.length})</span>
         </h1>
         <table className="w-full">
           <thead>
             <tr>
-              <th></th>
-              <th className="text-start">Name</th>
-              <th className="text-start invisible md:visible">Email</th>
-              <th className="text-start invisible md:visible">Phone</th>
-              <th className="text-start invisible md:visible">Address</th>
+              
+              <th className="text-start hidden md:table-cell">Name</th>
+              <th className="text-start hidden md:table-cell">Email</th>
+              <th className="text-start hidden md:table-cell">Phone</th>
+              <th className="text-start hidden md:table-cell">Address</th>
               <th></th>
             </tr>
           </thead>
@@ -87,24 +87,29 @@ const Contacts = () => {
                         navigate(`/detail/${contact.id}`);
                       }
                     }}
-                    className="row transition-all duration-300 group/item hover:bg-gray-100 cursor-pointer"
+                    className="row transition-all duration-100 group/item mb-5 hover:text-black hover:bg-gray-100 cursor-pointer "
                   >
-                    <td className="row py-3 mr-3 md:m-0 flex justify-center">
-                      <h1 className="row w-[35px] h-[35px] bg-blue-700 text-white flex justify-center items-center rounded-full">
+                    <td className="row py-3 mr-3 md:m-0 flex gap-4 items-center ">
+                      <div>
+                         <h1 className="row w-[35px] h-[35px] bg-blue-700 text-white flex justify-center items-center rounded-full">
                         {contact.name.split("")[0].toUpperCase()}
+
                       </h1>
+                      </div>
+                     
+                      <span className="row">{contact.name.length<15?contact.name :contact.name.slice(0,15)+"..." }</span>
                     </td>
-                    <td className="row py-3">{contact.name}</td>
-                    <td className="row py-3 invisible md:visible">
-                      {contact.email ? contact.email : "example@gmail.com"}
+                    {/* <td className="row py-3"></td> */}
+                    <td className="row py-3 hidden md:table-cell">
+                      {contact.email.length <25 ? contact.email : contact.email.slice(0,25)+'...'}
                     </td>
-                    <td className="row py-3 invisible md:visible">
+                    <td className="row py-3 hidden md:table-cell">
                       {contact.phone}
                     </td>
-                    <td className="row py-3 invisible md:visible">
+                    <td className="row py-3 hidden md:table-cell">
                       {contact.address ? contact.address : "Myanmar"}
                     </td>
-                    <td className="row invisible md:visible">
+                    <td className="row hidden md:table-cell">
                       <div className="text-xl md:flex gap-5 items-center cursor-pointer hidden">
                         <BiEditAlt
                           onClick={(e) => {
