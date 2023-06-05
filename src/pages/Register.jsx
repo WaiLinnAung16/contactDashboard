@@ -18,47 +18,18 @@ const Register = () => {
   const nav = useNavigate();
 
   const [errors, setErrors] = useState({});
-  const validation = () => {
-    let errorText = {};
-    let isValid = true;
-    if (name.length < 2) {
-      isValid = false;
-      errorText["name"] = "name must be at least 3 characters";
-    }
-    if (email.length === 0) {
-      isValid = false;
-      errorText["email"] = "email required";
-    } else if (!email.match(/^\S+@\S+$/)) {
-      isValid = false;
-      errorText["email"] = "invalid email";
-    }
-
-    if (password.length < 8) {
-      isValid = false;
-      errorText["password"] = "password must have at least 8 characters";
-    }
-    if (password_confirmation !== password) {
-      isValid = false;
-      errorText["password_confirmation"] = "password does not match";
-    }
-    setErrors(errorText);
-    // console.log(isError);
-    return isValid;
-  };
 
   const formHandler = async (e) => {
-    try {
-      e.preventDefault();
-      if (validation()) {
-        const user = { name, email, password, password_confirmation };
-        const { data } = await register(user);
-        console.log("data", data);
-        if (data?.success) {
-          nav("/login");
-        }
-      }
-    } catch (error) {
-      console.log(error);
+    e.preventDefault();
+    const user = { name, email, password, password_confirmation };
+    // console.log(user);
+    const data = await register(user);
+    if (data?.error?.data?.errors) {
+      // console.log(data?.error?.data?.errors);
+      setErrors(data?.error?.data?.errors);
+    }
+    if (data?.data?.success) {
+      nav("/login");
     }
   };
 
@@ -100,7 +71,7 @@ const Register = () => {
                   </label>
                 </div>
                 <small className="text-red-500">
-                  {errors.name ? errors.name : ""}
+                  {errors?.name ? errors.name[0] : ""}
                 </small>
               </div>
 
@@ -122,7 +93,7 @@ const Register = () => {
                   </label>
                 </div>
                 <small className="text-red-500">
-                  {errors.email ? errors.email : ""}
+                  {errors?.email ? errors.email[0] : ""}
                 </small>
               </div>
 
@@ -137,25 +108,29 @@ const Register = () => {
                     placeholder=" "
                   />
                   {showPassword ? (
-                    <AiOutlineEyeInvisible
+                    <div
                       onClick={() => setShowPassword(!showPassword)}
-                      className=" cursor-pointer absolute bottom-[18px] right-5 hover:bg-gray-200 w-6 h-4 rounded-full"
-                    />
+                      className=" cursor-pointer absolute bottom-[9px] right-5 w-8 h-8 flex justify-center items-center hover:bg-gray-200 rounded-full"
+                    >
+                      <AiOutlineEyeInvisible />
+                    </div>
                   ) : (
-                    <AiOutlineEye
+                    <div
                       onClick={() => setShowPassword(!showPassword)}
-                      className=" cursor-pointer absolute bottom-[18px] right-5 hover:bg-gray-200 w-6 h-4 rounded-full"
-                    />
+                      className=" cursor-pointer absolute bottom-[9px] right-5 w-8 h-8 flex justify-center items-center hover:bg-gray-200 rounded-full"
+                    >
+                      <AiOutlineEye />
+                    </div>
                   )}
                   <label
                     htmlFor="password"
                     className="absolute px-2 text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
                   >
-                    password
+                    Password
                   </label>
                 </div>
                 <small className="text-red-500">
-                  {errors.password ? errors.password : ""}
+                  {errors?.password ? errors.password[0] : ""}
                 </small>
               </div>
 
@@ -170,32 +145,34 @@ const Register = () => {
                     placeholder=" "
                   />
                   {showConfirmPassword ? (
-                    <AiOutlineEyeInvisible
+                    <div
                       onClick={() =>
                         setShowConfirmPassword(!showConfirmPassword)
                       }
-                      className=" cursor-pointer absolute bottom-[18px] right-5 hover:bg-gray-200 w-6 h-4 rounded-full"
-                    />
+                      className=" cursor-pointer absolute bottom-[9px] right-5 w-8 h-8 flex justify-center items-center hover:bg-gray-200 rounded-full"
+                    >
+                      <AiOutlineEyeInvisible />
+                    </div>
                   ) : (
-                    <AiOutlineEye
+                    <div
                       onClick={() =>
                         setShowConfirmPassword(!showConfirmPassword)
                       }
-                      className=" cursor-pointer absolute bottom-[18px] right-5 hover:bg-gray-200 w-6 h-4 rounded-full"
-                    />
+                      className=" cursor-pointer absolute bottom-[9px] right-5 w-8 h-8 flex justify-center items-center hover:bg-gray-200 rounded-full"
+                    >
+                      <AiOutlineEye />
+                    </div>
                   )}
                   <label
                     htmlFor="passwordConfirmation"
                     className="absolute px-2 text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
                   >
-                    confirm password
+                    Confirm password
                   </label>
                 </div>
-                <small className="text-red-500">
-                  {errors.password_confirmation
-                    ? errors.password_confirmation
-                    : ""}
-                </small>
+                {/* <small className="text-red-500">
+                  {errors?.password ? errors?.password[0] : ""}
+                </small> */}
               </div>
 
               <button
@@ -223,3 +200,30 @@ const Register = () => {
 };
 
 export default Register;
+// const validation = () => {
+//   let errorText = {};
+//   let isValid = true;
+//   if (name.length < 2) {
+//     isValid = false;
+//     errorText["name"] = "name must be at least 3 characters";
+//   }
+//   if (email.length === 0) {
+//     isValid = false;
+//     errorText["email"] = "email required";
+//   } else if (!email.match(/^\S+@\S+$/)) {
+//     isValid = false;
+//     errorText["email"] = "invalid email";
+//   }
+
+//   if (password.length < 8) {
+//     isValid = false;
+//     errorText["password"] = "password must have at least 8 characters";
+//   }
+//   if (password_confirmation !== password) {
+//     isValid = false;
+//     errorText["password_confirmation"] = "password does not match";
+//   }
+//   setErrors(errorText);
+//   // console.log(isError);
+//   return isValid;
+// };

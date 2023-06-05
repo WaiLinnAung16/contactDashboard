@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { addUser } from "../redux/services/authSlice";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import { ClipLoader } from "react-spinners";
+import { Toaster, toast } from "react-hot-toast";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -48,12 +49,17 @@ const Login = () => {
       if (data?.success) {
         dispatch(addUser({ user: data?.user, token: data?.token }));
         nav("/");
+      } else {
+        // console.log(data?.message);
+        toast.error(`Incorrect email or password`);
       }
     }
   };
 
   return (
     <div className="flex items-center justify-center h-screen">
+      <Toaster position="bottom-center" reverseOrder={false} />
+
       <div className="flex items-center justify-between  px-10 py-5 my-5 md:my-0">
         <div className="hidden md:block w-[50%] h-auto">
           <img
@@ -103,21 +109,25 @@ const Login = () => {
                     placeholder=" "
                   />
                   {showPassword ? (
-                    <AiOutlineEyeInvisible
+                    <div
                       onClick={() => setShowPassword(!showPassword)}
-                      className=" cursor-pointer absolute bottom-[18px] right-5 hover:bg-gray-200 w-6 h-4 rounded-full"
-                    />
+                      className=" cursor-pointer absolute bottom-[9px] right-5 w-8 h-8 flex justify-center items-center hover:bg-gray-200 rounded-full"
+                    >
+                      <AiOutlineEyeInvisible />
+                    </div>
                   ) : (
-                    <AiOutlineEye
+                    <div
                       onClick={() => setShowPassword(!showPassword)}
-                      className=" cursor-pointer absolute bottom-[18px] right-5 hover:bg-gray-200 w-6 h-4 rounded-full"
-                    />
+                      className=" cursor-pointer absolute bottom-[9px] right-5 w-8 h-8 flex justify-center items-center hover:bg-gray-200 rounded-full"
+                    >
+                      <AiOutlineEye />
+                    </div>
                   )}
                   <label
                     htmlFor="password"
                     className="absolute px-2 text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
                   >
-                    password
+                    Password
                   </label>
                 </div>
                 <span className="text-red-500">

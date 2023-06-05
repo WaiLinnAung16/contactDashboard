@@ -5,13 +5,12 @@ import {
   useGetContactQuery,
 } from "../redux/api/contactApi";
 import { BiEditAlt, BiTrash } from "react-icons/bi";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getContacts, getFrequent } from "../redux/services/contactSlice";
 import { AiOutlineUser } from "react-icons/ai";
 import Spinner from "../components/Spinner";
 import DeleteModal from "../components/DeleteModal";
-import { Toaster, toast } from "react-hot-toast";
 
 const Contacts = () => {
   const token = Cookies.get("token");
@@ -25,11 +24,7 @@ const Contacts = () => {
   const [selectedContactId, setSelectedContactId] = useState(null);
 
   const deleteContactHandler = async (id) => {
-    await toast.promise(deleteContact({ id, token }), {
-      loading: "Working...",
-      success: "Successfully deleted",
-      error: "Something wrong!",
-    });
+    await deleteContact({ id, token });
 
     setSelectedContactId(null);
   };
@@ -128,17 +123,13 @@ const Contacts = () => {
                           }}
                           className=" edit-btn transition hover:opacity-80"
                         />
-
                         <BiTrash
                           className="del-btn transition hover:opacity-80"
                           onClick={() => {
                             setSelectedContactId(contact.id);
                           }}
                         />
-                        <Toaster
-                          position="bottom-center"
-                          reverseOrder={false}
-                        />
+
                         {selectedContactId && (
                           <DeleteModal
                             toggleDelModal={true}

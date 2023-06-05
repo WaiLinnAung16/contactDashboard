@@ -27,9 +27,9 @@ export const contactApi = createApi({
       query: (token) => ({
         url: "/user-logout",
         method: "POST",
-        headers: {authorization: `Bearer ${token}`}
+        headers: { authorization: `Bearer ${token}` },
       }),
-      invalidatesTags: ['auth']
+      invalidatesTags: ["auth"],
     }),
 
     getContact: builder.query({
