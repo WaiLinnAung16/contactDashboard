@@ -11,6 +11,7 @@ import { getContacts } from "../redux/services/contactSlice";
 import { AiOutlineUser } from "react-icons/ai";
 import Spinner from "../components/Spinner";
 import DeleteModal from "../components/DeleteModal";
+import { Toaster, toast } from "react-hot-toast";
 
 const Contacts = () => {
   const token = Cookies.get("token");
@@ -24,8 +25,18 @@ const Contacts = () => {
   const [selectedContactId, setSelectedContactId] = useState(null);
 
   const deleteContactHandler = async (id) => {
-    await deleteContact({ id, token });
+    
+    await toast.promise(deleteContact({ id, token }), {
+      loading: "Working...",
+      success: "Successfully deleted",
+      error: "Something wrong!",
+    });
+
     setSelectedContactId(null);
+
+    // setTimeout(() => {
+    //   navigate("/");
+    // }, 900);
   };
 
   useEffect(() => {
@@ -59,17 +70,17 @@ const Contacts = () => {
   return (
     <>
       <div className="text-sm text-gray-500 overflow-hidden px-5">
-        <h1 className="text-center md:text-start my-5 ">
+        <h1 className="my-5">
           Contacts<span>({data?.contacts?.data.length})</span>
         </h1>
-        <table className="w-full table-fixed">
+        <table className="w-full">
           <thead>
             <tr>
               <th></th>
-              <th className="text-start hidden md:table-cell">Name</th>
-              <th className="text-start hidden md:table-cell">Email</th>
-              <th className="text-start hidden md:table-cell">Phone</th>
-              <th className="text-start hidden md:table-cell">Address</th>
+              <th className="text-start">Name</th>
+              <th className="text-start invisible md:visible">Email</th>
+              <th className="text-start invisible md:visible">Phone</th>
+              <th className="text-start invisible md:visible">Address</th>
               <th></th>
             </tr>
           </thead>
@@ -87,24 +98,24 @@ const Contacts = () => {
                         navigate(`/detail/${contact.id}`);
                       }
                     }}
-                    className="row transition-all duration-100 group/item mb-5 hover:font-bold hover:bg-gray-200 cursor-pointer "
+                    className="row transition-all duration-300 group/item hover:bg-gray-100 cursor-pointer"
                   >
-                    <td className=" py-3 mr-3 md:m-0 flex justify-center ">
+                    <td className="row py-3 mr-3 md:m-0 flex justify-center">
                       <h1 className="row w-[35px] h-[35px] bg-blue-700 text-white flex justify-center items-center rounded-full">
                         {contact.name.split("")[0].toUpperCase()}
                       </h1>
                     </td>
-                    <td className="row py-3"><span className="">{contact.name.length<10?contact.name :contact.name.slice(0,10)+"..." }</span></td>
-                    <td className="row py-3 hidden md:table-cell">
+                    <td className="row py-3">{contact.name}</td>
+                    <td className="row py-3 invisible md:visible">
                       {contact.email ? contact.email : "example@gmail.com"}
                     </td>
-                    <td className="row py-3 hidden md:table-cell">
+                    <td className="row py-3 invisible md:visible">
                       {contact.phone}
                     </td>
-                    <td className="row py-3 hidden md:table-cell">
+                    <td className="row py-3 invisible md:visible">
                       {contact.address ? contact.address : "Myanmar"}
                     </td>
-                    <td className="row hidden md:table-cell">
+                    <td className="row invisible md:visible">
                       <div className="text-xl md:flex gap-5 items-center cursor-pointer hidden">
                         <BiEditAlt
                           onClick={(e) => {
@@ -115,11 +126,15 @@ const Contacts = () => {
 
                         <BiTrash
                           className="del-btn transition hover:opacity-80"
-                          onClick={() => {
+                          onClick={(e) => {
+                            console.log(contact.id);
                             setSelectedContactId(contact.id);
                           }}
                         />
-
+                        <Toaster
+                          position="bottom-center"
+                          reverseOrder={false}
+                        />
                         {selectedContactId && (
                           <DeleteModal
                             toggleDelModal={true}
