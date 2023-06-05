@@ -1,14 +1,16 @@
-import { AiOutlinePlus } from "react-icons/ai";
+import { AiOutlinePlus, AiOutlineClockCircle } from "react-icons/ai";
 import { RiContactsLine } from "react-icons/ri";
 import { RxCross2 } from "react-icons/rx";
 import logo from "../assets/contacts-logo.png";
 import { Link, NavLink } from "react-router-dom";
 import { useGetContactQuery } from "../redux/api/contactApi";
 import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
 
 const Sidebar = ({ sideBarToggle, mobileSideToggle, togglerClick }) => {
   const token = Cookies.get("token");
   const { data } = useGetContactQuery(token);
+  const { frequent } = useSelector((store) => store.contactSlice);
   const contactLength = data?.contacts?.data.length;
   return (
     <>
@@ -31,6 +33,17 @@ const Sidebar = ({ sideBarToggle, mobileSideToggle, togglerClick }) => {
                 <span>Contacts</span>
               </div>
               <span className="">{contactLength}</span>
+            </div>
+          </NavLink>
+          <NavLink to={"/frequent"} className="">
+            <div className=" w-[280px]  flex justify-between items-center py-2 px-8 rounded-r-full transition-all hover:bg-gray-300">
+              <div className=" flex items-center gap-x-5">
+                <AiOutlineClockCircle className="" />
+                <span>Frequent</span>
+              </div>
+              <span className="">
+                {frequent.length !== 0 && frequent.length}
+              </span>
             </div>
           </NavLink>
         </ul>
@@ -74,6 +87,20 @@ const Sidebar = ({ sideBarToggle, mobileSideToggle, togglerClick }) => {
                 <span>Contacts</span>
               </div>
               <span className="">{contactLength}</span>
+            </div>
+          </NavLink>
+          <NavLink to={"/frequent"} className="">
+            <div
+              onClick={togglerClick}
+              className=" w-[280px]  flex justify-between items-center py-2 px-8 rounded-r-full transition-all hover:bg-gray-300"
+            >
+              <div className=" flex items-center gap-x-5">
+                <AiOutlineClockCircle className="" />
+                <span>Frequent</span>
+              </div>
+              <span className="">
+                {frequent.length !== 0 && frequent.length}
+              </span>
             </div>
           </NavLink>
         </ul>

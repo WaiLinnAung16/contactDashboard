@@ -14,8 +14,7 @@ import { setSearchTerm } from "../redux/services/contactSlice";
 
 const Header = ({ togglerClick }) => {
   const inputRef = useRef(null);
-  const inputRefPc = useRef(null)
-  
+
   const [search, setSearch] = useState(false);
 
   const handleSearchClick = () => {
@@ -41,16 +40,6 @@ const Header = ({ togglerClick }) => {
     console.log(data);
   };
 
-  const handleSubmitPc = (e) => {
-    e.preventDefault();
-    dispatch(setSearchTerm(inputRefPc.current.value))
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(setSearchTerm(inputRef.current.value))
-  }
-
   return (
     <>
       <div className="flex items-center gap-6 py-2 sticky top-0 px-5 shadow z-50">
@@ -73,13 +62,13 @@ const Header = ({ togglerClick }) => {
 
         <div className="flex justify-end items-center gap-3 md:justify-between w-full">
           <div className="px-4 py-2 bg-gray-200 rounded-lg lg:w-[60%] h-12 hidden md:w-[400px] md:block focus-within:bg-white focus-within:shadow-md focus-within:border-none focus-within:rounded-t-lg focus-within:rounded-b-none">
-            <form className=" flex gap-2  items-center " onSubmit={handleSubmitPc}>
+            <form className=" flex gap-2  items-center ">
               <button className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-300">
                 <AiOutlineSearch size={20} />
               </button>
 
               <input
-                ref={inputRefPc}
+                onChange={(e) => dispatch(setSearchTerm(e.target.value))}
                 className=" bg-transparent outline-none placeholder:text-gray-400/60 w-full  focus:bg-white"
                 type="text"
                 name=""
@@ -95,19 +84,20 @@ const Header = ({ togglerClick }) => {
             } absolute gF:min-w-[100px] min-w-[295px] s8:min-w-[286px] se:min-w-[295px] i12p:min-w-[315px] ixr:min-w-[340px] gap-5 px-2 py-2 bg-gray-200 rounded-lg left-2 top-1 h-12 md:hidden focus-within:bg-white focus-within:shadow-md focus-within:border-none focus-within:rounded-t-xl focus-within:rounded-b-none`}
           >
             <div className={`flex gap-5 items-center `}>
-              <form onSubmit={handleSubmit} className="flex items-center gap-6">
-              <button
-                onClick={() => setSearch((pre) => !pre)}
-                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-300"
-              >
-                <IoArrowBackSharp size={20} />
-              </button>
-              <input
-                className=" bg-transparent outline-none placeholder:text-gray-400 w-full focus:bg-white"
-                type="text"
-                ref={inputRef}
-                placeholder="Search"
-              />
+              <form className="flex items-center gap-6">
+                <button
+                  onClick={() => setSearch((pre) => !pre)}
+                  className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-300"
+                >
+                  <IoArrowBackSharp size={20} />
+                </button>
+                <input
+                  onChange={(e) => dispatch(setSearchTerm(e.target.value))}
+                  className=" bg-transparent outline-none placeholder:text-gray-400 w-full focus:bg-white"
+                  type="text"
+                  ref={inputRef}
+                  placeholder="Search"
+                />
               </form>
             </div>
           </div>

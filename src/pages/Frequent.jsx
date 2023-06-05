@@ -1,65 +1,27 @@
-import Cookies from "js-cookie";
-import React, { useEffect, useState } from "react";
-import {
-  useDeleteContactMutation,
-  useGetContactQuery,
-} from "../redux/api/contactApi";
+import React from "react";
 import { BiEditAlt, BiTrash } from "react-icons/bi";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getContacts, getFrequent } from "../redux/services/contactSlice";
-import { AiOutlineUser } from "react-icons/ai";
-import Spinner from "../components/Spinner";
-import DeleteModal from "../components/DeleteModal";
+import { getFrequent, removeFrequent } from "../redux/services/contactSlice";
 import { Toaster, toast } from "react-hot-toast";
 
-const Contacts = () => {
-  const token = Cookies.get("token");
-  const { data, isLoading } = useGetContactQuery(token);
+const Frequent = () => {
+  const { frequent } = useSelector((store) => store.contactSlice);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { contacts } = useSelector((store) => store.contactSlice);
   const { searchTerm } = useSelector((store) => store.contactSlice);
-  const [deleteContact] = useDeleteContactMutation();
 
-  const [selectedContactId, setSelectedContactId] = useState(null);
-
-  const deleteContactHandler = async (id) => {
-    
-    await toast.promise(deleteContact({ id, token }), {
-      loading: "Working...",
-      success: "Successfully deleted",
-      error: "Something wrong!",
-    });
-
-    setSelectedContactId(null);
-  };
-
-  useEffect(() => {
-    dispatch(getContacts(data?.contacts?.data));
-  }, [data]);
-
-  if (isLoading) {
-    return <Spinner />;
-  }
-
-  if (!data?.contacts?.data.length) {
+  if (!frequent.length) {
     return (
-      <div className=" flex flex-col gap-5 justify-center items-center h-screen">
-        <img
-          className=" w-[250px]"
-          src="https://ssl.gstatic.com/social/contactsui/images/emptycontacts/emptycontacts_animation_cell4.png"
-          alt=""
-        />
-        <h1 className=" text-lg">No contacts yet</h1>
-        <button
-          onClick={() => navigate(`/create`)}
-          className=" flex gap-2 items-center text-sm text-blue-500 font-medium rounded-md px-4 py-2 hover:bg-blue-50"
-        >
-          <AiOutlineUser className=" text-lg" />
-          Create contact
-        </button>
-      </div>
+      <>
+        <div className=" p-5 space-y-5">
+          <h4 className=" uppercase text-xs text-gray-500 font-medium">
+            FREQUENTLY CONTACTED
+          </h4>
+          <h1>People you contact the most will appear here</h1>
+        </div>
+      </>
     );
   }
 
@@ -67,7 +29,7 @@ const Contacts = () => {
     <>
       <div className="text-sm text-gray-500 overflow-hidden px-5">
         <h1 className="my-5">
-          Contacts<span>({data?.contacts?.data.length})</span>
+          Frequent contacts<span>({frequent.length})</span>
         </h1>
         <table className="w-full">
           <thead>
@@ -81,7 +43,7 @@ const Contacts = () => {
             </tr>
           </thead>
           <tbody>
-            {contacts
+            {frequent
               ?.filter((contact) =>
                 contact.name.toLowerCase().includes(searchTerm.toLowerCase())
               )
@@ -92,7 +54,7 @@ const Contacts = () => {
                     onClick={(e) => {
                       if (e.target.classList.contains("row")) {
                         navigate(`/detail/${contact.id}`);
-                        dispatch(getFrequent(contact))
+                        dispatch(getFrequent(contact));
                       }
                     }}
                     className="row transition-all duration-300 group/item hover:bg-gray-100 cursor-pointer"
@@ -124,22 +86,17 @@ const Contacts = () => {
                         <BiTrash
                           className="del-btn transition hover:opacity-80"
                           onClick={(e) => {
-                            console.log(contact.id);
-                            setSelectedContactId(contact.id);
+                            dispatch(removeFrequent(contact));
+                            toast.success("frequent contact deleted");
                           }}
                         />
                         <Toaster
+                          toastOptions={{
+                            className: " text-sm",
+                          }}
                           position="bottom-center"
                           reverseOrder={false}
                         />
-                        {selectedContactId && (
-                          <DeleteModal
-                            toggleDelModal={true}
-                            setToggleDelModal={setSelectedContactId}
-                            deleteContactHandler={deleteContactHandler}
-                            id={selectedContactId}
-                          />
-                        )}
                       </div>
                     </td>
                   </tr>
@@ -152,4 +109,4 @@ const Contacts = () => {
   );
 };
 
-export default Contacts;
+export default Frequent;

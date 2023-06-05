@@ -4,7 +4,13 @@ import Cookies from "js-cookie";
 const initialState = {
     contacts : [],
     contact: {},
-    searchTerm : ""
+    searchTerm : "",
+    frequent : [],
+}
+
+const existedFrequent = Cookies.get("frequent")
+if(existedFrequent){
+    initialState.frequent = JSON.parse(existedFrequent)
 }
 
 export const contactSlice = createSlice({
@@ -20,9 +26,23 @@ export const contactSlice = createSlice({
         },
         setSearchTerm : (state, {payload}) => {
             state.searchTerm = payload
+        },
+        getFrequent : (state, {payload}) => {
+            const isExisted = state.frequent.find(item => item.id === payload.id)
+            if(isExisted){
+                return state;
+            }
+            state.frequent.push(payload)
+            Cookies.set("frequent", JSON.stringify(state.frequent))
+        },
+        removeFrequent : (state, {payload}) => {
+            state.frequent = state.frequent.filter(item => item.id !== payload.id)
+            Cookies.set("frequent", JSON.stringify(state.frequent))
         }
+
+
     }
 })
 
-export const {getContacts,getSingleContact, setSearchTerm} = contactSlice.actions;
+export const {getContacts,getSingleContact, setSearchTerm, getFrequent, removeFrequent} = contactSlice.actions;
 export default contactSlice.reducer;
