@@ -29,7 +29,7 @@ const Register = () => {
       setErrors(data?.error?.data?.errors);
     }
     if (data?.data?.success) {
-      nav("/login");
+      nav("/login", {state: {email, password}});
     }
   };
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../redux/api/contactApi";
 import { useDispatch } from "react-redux";
 import { addUser } from "../redux/services/authSlice";
@@ -9,9 +9,14 @@ import { ClipLoader } from "react-spinners";
 import { Toaster, toast } from "react-hot-toast";
 
 const Login = () => {
+  const location = useLocation();
+  const defEmail = location?.state?.email;
+  const defPassword = location?.state?.password;
+  // console.log(defEmail);
+
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState(defEmail);
+  const [password, setPassword] = useState(defPassword);
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
 
