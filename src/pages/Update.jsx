@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   AiOutlinePhone,
   AiOutlineMail,
@@ -9,7 +9,6 @@ import { FaRegAddressCard } from "react-icons/fa";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "../components/Modal";
-import { useFormik } from "formik";
 import { Toaster, toast } from "react-hot-toast";
 import {
   useGetSingleContactQuery,
@@ -17,15 +16,7 @@ import {
 } from "../redux/api/contactApi";
 import { useSelector } from "react-redux";
 import Spinner from "../components/Spinner";
-import * as Yup from "yup";
 import { BsArrowLeft } from "react-icons/bs";
-
-const userSchema = Yup.object().shape({
-  name: Yup.string().min(3).max(50),
-  phone: Yup.string(),
-  email: Yup.string().email(),
-  address: Yup.string(),
-});
 
 const Update = () => {
   const { id } = useParams();
@@ -37,37 +28,75 @@ const Update = () => {
   const [updateContact, { isLoading: isUpdateLoading }] =
     useUpdateContactMutation();
   const { data: contact, isLoading } = useGetSingleContactQuery({ id, token });
-  const [data, setData] = useState({});
-  // console.log(contact?.contact);
+
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [formError, setFormError] = useState({});
 
   useEffect(() => {
-    setData(contact?.contact);
+    setName(contact?.contact.name);
+    setPhone(contact?.contact.phone);
+    setEmail(contact?.contact.email);
+    setAddress(contact?.contact.address);
   }, [contact]);
 
-  // formik
+  const validate = (values) => {
+    let isValid = true;
+    const errors = {};
+    if (!values.name) {
+      isValid = false;
+      errors.name = "Name is a required field";
+    }
+    if (!values.email) {
+      isValid = false;
+      errors.email = "Email is a required field";
+    } else if (!values.email.match(/^\S+@\S+$/)) {
+      isValid = false;
+      errors.email = "Invalid email";
+    }
 
-  const formik = useFormik({
-    initialValues: {
-      name: "",
-      phone: "",
-      email: "",
-      address: "",
-    },
+    if (!values.phone) {
+      isValid = false;
+      errors.phone = "Phone is a required field";
+    } else if (values.phone.length < 8) {
+      isValid = false;
+      errors.phone = "Phone must be greater than 8";
+    }
 
-    validationSchema: userSchema,
+    if (!values.address) {
+      isValid = false;
+      errors.address = "Address is a required field";
+    }
+    setFormError(errors);
+    return isValid;
+  };
 
-    onSubmit: async (values, actions) => {
-      await toast.promise(updateContact({ id, userData: values, token }), {
-        loading: "Working...",
-        success: "Update Contact Success",
-        error: "Somthing Wrong!",
-      });
-      setTimeout(() => {
-        actions.resetForm();
-        navigate(`/detail/${id}`);
-      }, 900);
-    },
-  });
+  const submitHandler = async (e) => {
+    try {
+      e.preventDefault();
+      const userData = { name, phone, email, address };
+      if (validate(userData)) {
+        const data = await toast.promise(
+          updateContact({ id, userData, token }),
+          {
+            loading: "Working...",
+            success: "Update Contact Success",
+            error: "Somthing Wrong!",
+          }
+        );
+        console.log(data);
+        setTimeout(() => {
+          navigate(`/detail/${id}`);
+        }, 900);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(formError);
 
   if (isLoading) {
     return <Spinner />;
@@ -129,39 +158,34 @@ const Update = () => {
           </div>
         </div>
 
-        <form id="create-form" onSubmit={formik.handleSubmit}>
+        <form id="create-form" onSubmit={submitHandler}>
           <div className=" m-10 space-y-8 mt-[430px] md:mt-[280px]">
             <div className=" flex items-start gap-8">
               <AiOutlineUser className=" mt-4 text-xl text-gray-700" />
               <div className="w-[300px] md:w-[500px]">
                 <div className="relative">
                   <input
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    defaultValue={data?.name}
+                    onChange={(e) => setName(e.target.value)}
+                    defaultValue={name}
                     type="text"
-                    id="name"
-                    name="name"
                     className={`${
-                      formik.errors.name &&
-                      formik.touched.name &&
-                      "border-red-500 text-red-500"
-                    } block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-[1px] border-neutral-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                      formError?.name
+                        ? "border-red-500 text-red-500"
+                        : "border-neutral-500 text-gray-900"
+                    } block px-2.5 pb-2.5 pt-4 w-full text-sm bg-transparent rounded-lg border-[1px] focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                     autoFocus
                   />
                   <label
                     htmlFor="name"
                     className={`${
-                      formik.errors.name &&
-                      formik.touched.name &&
-                      " text-red-500"
-                    } absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1`}
+                      formError?.name ? "text-red-500" : "text-gray-900 "
+                    } absolute text-sm  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1`}
                   >
                     Name
                   </label>
                 </div>
-                {formik.errors.name && formik.touched.name && (
-                  <small className=" text-red-500">{formik.errors.name}</small>
+                {formError?.name && (
+                  <small className=" text-red-500">{formError?.name}</small>
                 )}
               </div>
             </div>
@@ -172,32 +196,27 @@ const Update = () => {
               <div className=" flex flex-col w-[300px] md:w-[500px] gap-2">
                 <div className="relative">
                   <input
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    defaultValue={data?.phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    defaultValue={phone}
                     type="text"
-                    id="phone"
-                    name="phone"
                     className={`${
-                      formik.errors.phone &&
-                      formik.touched.phone &&
-                      "border-red-500 text-red-500"
-                    } block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-[1px] border-neutral-500    focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                      formError?.phone
+                        ? "border-red-500 text-red-500"
+                        : "border-neutral-500 text-gray-900"
+                    } block px-2.5 pb-2.5 pt-4 w-full text-sm bg-transparent rounded-lg border-[1px] focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                     placeholder=" "
                   />
                   <label
                     htmlFor="phone"
                     className={`${
-                      formik.errors.phone &&
-                      formik.touched.phone &&
-                      " text-red-500"
-                    } absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1`}
+                      formError?.phone ? "text-red-500" : "text-gray-900 "
+                    } absolute text-sm  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1`}
                   >
                     Phone
                   </label>
                 </div>
-                {formik.errors.phone && formik.touched.phone && (
-                  <small className=" text-red-500">{formik.errors.phone}</small>
+                {formError?.phone && (
+                  <small className=" text-red-500">{formError?.phone}</small>
                 )}
               </div>
             </div>
@@ -208,32 +227,27 @@ const Update = () => {
               <div className=" flex flex-col gap-2  w-[300px] md:w-[500px]">
                 <div className="relative">
                   <input
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    defaultValue={data?.email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    defaultValue={email}
                     type="text"
-                    id="email"
-                    name="email"
                     className={`${
-                      formik.errors.email &&
-                      formik.touched.email &&
-                      "border-red-500 text-red-500"
-                    } block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-[1px] border-neutral-500    focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                      formError?.email
+                        ? "border-red-500 text-red-500"
+                        : "border-neutral-500 text-gray-900"
+                    } block px-2.5 pb-2.5 pt-4 w-full text-sm bg-transparent rounded-lg border-[1px] focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                     placeholder=" "
                   />
                   <label
                     htmlFor="email"
                     className={`${
-                      formik.errors.email &&
-                      formik.touched.email &&
-                      " text-red-500"
-                    } absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1`}
+                      formError?.email ? "text-red-500" : "text-gray-900 "
+                    } absolute text-sm  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1`}
                   >
                     Email
                   </label>
                 </div>
-                {formik.errors.email && formik.touched.email && (
-                  <small className=" text-red-500">{formik.errors.email}</small>
+                {formError?.email && (
+                  <small className=" text-red-500">{formError?.email}</small>
                 )}
               </div>
             </div>
@@ -244,34 +258,27 @@ const Update = () => {
               <div className="w-[300px] md:w-[500px]">
                 <div className="relative">
                   <input
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    defaultValue={data?.address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    defaultValue={address}
                     type="text"
-                    id="address"
-                    name="address"
                     className={`${
-                      formik.errors.address &&
-                      formik.touched.address &&
-                      "border-red-500 text-red-500"
-                    } block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-[1px] border-neutral-500    focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                      formError?.address
+                        ? "border-red-500 text-red-500"
+                        : "border-neutral-500 text-gray-900"
+                    } block px-2.5 pb-2.5 pt-4 w-full text-sm bg-transparent rounded-lg border-[1px] focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                     placeholder=" "
                   />
                   <label
                     htmlFor="address"
                     className={`${
-                      formik.errors.address &&
-                      formik.touched.address &&
-                      " text-red-500"
-                    } absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1`}
+                      formError?.address ? "text-red-500" : "text-gray-900 "
+                    } absolute text-sm  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white  px-2 peer-focus:px-2 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1`}
                   >
                     Address
                   </label>
                 </div>
-                {formik.errors.address && formik.touched.address && (
-                  <small className=" text-red-500">
-                    {formik.errors.address}
-                  </small>
+                {formError?.address && (
+                  <small className=" text-red-500">{formError?.address}</small>
                 )}
               </div>
             </div>

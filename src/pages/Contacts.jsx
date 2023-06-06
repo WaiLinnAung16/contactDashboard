@@ -93,27 +93,27 @@ const Contacts = () => {
                     <td className="row py-3 mr-3 md:m-0 flex gap-4 items-center ">
                       <div>
                         <h1 className="row w-[35px] h-[35px] bg-blue-700 text-white flex justify-center items-center rounded-full">
-                          {contact.name.split("")[0].toUpperCase()}
+                          {contact?.name.split("")[0].toUpperCase()}
                         </h1>
                       </div>
 
                       <span className="row">
-                        {contact.name.length < 15
+                        {contact?.name?.length < 15
                           ? contact.name
                           : contact.name.slice(0, 15) + "..."}
                       </span>
                     </td>
 
                     <td className="row py-3 hidden md:table-cell">
-                      {contact.email.length < 25
+                      {contact?.email?.length < 25
                         ? contact.email
                         : contact.email.slice(0, 25) + "..."}
                     </td>
                     <td className="row py-3 hidden md:table-cell">
-                      {contact.phone}
+                      {contact?.phone}
                     </td>
                     <td className="row py-3 hidden md:table-cell">
-                      {contact.address ? contact.address : "Myanmar"}
+                      {contact?.address ? contact.address : "Myanmar"}
                     </td>
                     <td className="row hidden md:table-cell">
                       <div className="text-xl md:flex gap-5 items-center cursor-pointer hidden">

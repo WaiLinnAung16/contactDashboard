@@ -10,7 +10,7 @@ import { FiLogOut } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useLogoutMutation } from "../redux/api/contactApi";
 import { removeUser } from "../redux/services/authSlice";
-import { setSearchTerm } from "../redux/services/contactSlice";
+import { removeAllFrequent, setSearchTerm } from "../redux/services/contactSlice";
 
 const Header = ({ togglerClick }) => {
   const inputRef = useRef(null);
@@ -36,7 +36,10 @@ const Header = ({ togglerClick }) => {
   const logoutHandler = async () => {
     const { data } = await logout(token);
     dispatch(removeUser());
-    if (data?.success) nav("/login");
+    if (data?.success) {
+      dispatch(removeAllFrequent())
+      nav("/login");
+    }
     console.log(data);
   };
 
@@ -60,8 +63,8 @@ const Header = ({ togglerClick }) => {
           </div>
         </div>
 
-        <div className="flex justify-end items-center gap-3 md:justify-between w-full">
-          <div className="px-4 py-2 bg-gray-200 rounded-lg lg:w-[60%] h-12 hidden md:w-[400px] md:block focus-within:bg-white focus-within:shadow-md focus-within:border-none focus-within:rounded-t-lg focus-within:rounded-b-none">
+        <div className="lg:ml-10 flex justify-end items-center gap-3 md:justify-between w-full">
+          <div className="px-4 py-2 bg-gray-200 rounded-lg lg:w-[75%] h-12 hidden md:w-[400px] md:block focus-within:bg-white focus-within:shadow-md focus-within:border-none focus-within:rounded-t-lg focus-within:rounded-b-none">
             <form className=" flex gap-2  items-center ">
               <button className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-300">
                 <AiOutlineSearch size={20} />
