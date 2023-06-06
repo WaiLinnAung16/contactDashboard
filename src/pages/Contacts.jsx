@@ -7,7 +7,11 @@ import {
 import { BiEditAlt, BiTrash } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getContacts, getFrequent } from "../redux/services/contactSlice";
+import {
+  getContacts,
+  getFrequent,
+  removeFrequent,
+} from "../redux/services/contactSlice";
 import { AiOutlineUser } from "react-icons/ai";
 import Spinner from "../components/Spinner";
 import DeleteModal from "../components/DeleteModal";
@@ -25,8 +29,8 @@ const Contacts = () => {
 
   const deleteContactHandler = async (id) => {
     await deleteContact({ id, token });
-
     setSelectedContactId(null);
+    dispatch(removeFrequent(id));
   };
 
   useEffect(() => {
@@ -39,21 +43,39 @@ const Contacts = () => {
 
   if (!data?.contacts?.data.length) {
     return (
-      <div className=" flex flex-col gap-5 justify-center items-center h-screen">
-        <img
-          className=" w-[250px]"
-          src="https://ssl.gstatic.com/social/contactsui/images/emptycontacts/emptycontacts_animation_cell4.png"
-          alt=""
-        />
-        <h1 className=" text-lg">No contacts yet</h1>
-        <button
-          onClick={() => navigate(`/create`)}
-          className=" flex gap-2 items-center text-sm text-blue-500 font-medium rounded-md px-4 py-2 hover:bg-blue-50"
+      <>
+        <div
+          onClick={() => navigate("/create")}
+          className=" fixed bottom-8 right-8 md:hidden p-3 rounded-full cursor-pointer"
+          style={{
+            boxShadow:
+              "0 1px 3px 0 rgba(60,64,67,.3), 0 4px 8px 3px rgba(60,64,67,.15)",
+          }}
         >
-          <AiOutlineUser className=" text-lg" />
-          Create contact
-        </button>
-      </div>
+          <svg width="36" height="36" viewBox="0 0 36 36">
+            <path fill="#34A853" d="M16 16v14h4V20z"></path>
+            <path fill="#4285F4" d="M30 16H20l-4 4h14z"></path>
+            <path fill="#FBBC05" d="M6 16v4h10l4-4z"></path>
+            <path fill="#EA4335" d="M20 16V6h-4v14z"></path>
+            <path fill="none" d="M0 0h36v36H0z"></path>
+          </svg>
+        </div>
+        <div className=" flex flex-col gap-5 justify-center items-center h-screen">
+          <img
+            className=" w-[250px]"
+            src="https://ssl.gstatic.com/social/contactsui/images/emptycontacts/emptycontacts_animation_cell4.png"
+            alt=""
+          />
+          <h1 className=" text-lg">No contacts yet</h1>
+          <button
+            onClick={() => navigate(`/create`)}
+            className=" flex gap-2 items-center text-sm text-blue-500 font-medium rounded-md px-4 py-2 hover:bg-blue-50"
+          >
+            <AiOutlineUser className=" text-lg" />
+            Create contact
+          </button>
+        </div>
+      </>
     );
   }
 
@@ -63,6 +85,22 @@ const Contacts = () => {
         <h1 className="text-center md:text-start my-5 text-lg">
           Contacts<span>({data?.contacts?.data.length})</span>
         </h1>
+        <div
+          onClick={() => navigate("/create")}
+          className=" fixed bottom-8 right-8 md:hidden p-3 rounded-full cursor-pointer"
+          style={{
+            boxShadow:
+              "0 1px 3px 0 rgba(60,64,67,.3), 0 4px 8px 3px rgba(60,64,67,.15)",
+          }}
+        >
+          <svg width="36" height="36" viewBox="0 0 36 36">
+            <path fill="#34A853" d="M16 16v14h4V20z"></path>
+            <path fill="#4285F4" d="M30 16H20l-4 4h14z"></path>
+            <path fill="#FBBC05" d="M6 16v4h10l4-4z"></path>
+            <path fill="#EA4335" d="M20 16V6h-4v14z"></path>
+            <path fill="none" d="M0 0h36v36H0z"></path>
+          </svg>
+        </div>
         <table className="w-full">
           <thead>
             <tr>

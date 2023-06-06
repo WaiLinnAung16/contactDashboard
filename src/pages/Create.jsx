@@ -68,7 +68,7 @@ const Create = () => {
           success: "Create Contact Success",
           error: "Somthing Wrong!",
         });
-        console.log(data);
+        // console.log(data);
         setTimeout(() => {
           navigate("/");
         }, 900);

@@ -94,7 +94,7 @@ const Frequent = () => {
                         <BiTrash
                           className="del-btn transition hover:opacity-80"
                           onClick={() => {
-                            dispatch(removeFrequent(contact));
+                            dispatch(removeFrequent(contact.id));
                             toast.success("frequent contact deleted");
                           }}
                         />

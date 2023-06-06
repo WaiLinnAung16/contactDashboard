@@ -36,7 +36,7 @@ export const contactSlice = createSlice({
       Cookies.set("frequent", JSON.stringify(state.frequent));
     },
     removeFrequent: (state, { payload }) => {
-      state.frequent = state.frequent.filter((item) => item.id !== payload.id);
+      state.frequent = state.frequent.filter((item) => item.id != payload);
       Cookies.set("frequent", JSON.stringify(state.frequent));
     },
     removeAllFrequent: (state) => {
