@@ -22,7 +22,13 @@ const Sidebar = ({ sideBarToggle, mobileSideToggle, togglerClick }) => {
         <ul className="flex flex-col mt-4">
           <Link to={"/create"} className="ml-2 mb-5">
             <div className=" w-fit px-6 py-3 rounded-full outline-none flex items-center gap-4 bg-white text-black shadow border transition-all hover:shadow-xl hover:text-blue-500">
-              <AiOutlinePlus size={20} />
+              <svg width="30" height="30" viewBox="0 0 36 36">
+                <path fill="#34A853" d="M16 16v14h4V20z"></path>
+                <path fill="#4285F4" d="M30 16H20l-4 4h14z"></path>
+                <path fill="#FBBC05" d="M6 16v4h10l4-4z"></path>
+                <path fill="#EA4335" d="M20 16V6h-4v14z"></path>
+                <path fill="none" d="M0 0h36v36H0z"></path>
+              </svg>
               Create Contact
             </div>
           </Link>
@@ -73,7 +79,13 @@ const Sidebar = ({ sideBarToggle, mobileSideToggle, togglerClick }) => {
               onClick={togglerClick}
               className=" w-fit px-6 py-3 rounded-full outline-none flex items-center gap-4 bg-white text-black shadow border transition-all hover:shadow-xl hover:text-blue-500"
             >
-              <AiOutlinePlus size={20} />
+              <svg width="30" height="30" viewBox="0 0 36 36">
+                <path fill="#34A853" d="M16 16v14h4V20z"></path>
+                <path fill="#4285F4" d="M30 16H20l-4 4h14z"></path>
+                <path fill="#FBBC05" d="M6 16v4h10l4-4z"></path>
+                <path fill="#EA4335" d="M20 16V6h-4v14z"></path>
+                <path fill="none" d="M0 0h36v36H0z"></path>
+              </svg>
               Create Contact
             </div>
           </Link>

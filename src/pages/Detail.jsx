@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { AiOutlinePlus, AiOutlineMail, AiOutlinePhone } from "react-icons/ai";
 import { FaRegAddressCard } from "react-icons/fa";
 import { BsArrowLeft, BsQuestionCircle } from "react-icons/bs";
@@ -6,21 +6,20 @@ import { BiTrash } from "react-icons/bi";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   useDeleteContactMutation,
-  useGetContactQuery,
   useGetSingleContactQuery,
 } from "../redux/api/contactApi";
 import DeleteModal from "../components/DeleteModal";
 import { useDispatch, useSelector } from "react-redux";
-import Spinner from "../components/Spinner";
 import { Toaster, toast } from "react-hot-toast";
-import { removeAllFrequent, removeFrequent } from "../redux/services/contactSlice";
+import { removeFrequent } from "../redux/services/contactSlice";
+import DetailLoading from "../components/Skeleton/DetailLoading";
 
 const Detail = () => {
   const { id } = useParams();
   const { token } = useSelector((store) => store.authSlice);
   const { data: contact, isLoading } = useGetSingleContactQuery({ id, token });
   const [deleteContact] = useDeleteContactMutation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -40,21 +39,20 @@ const Detail = () => {
   };
 
   if (isLoading) {
-    return <Spinner />;
+    return <DetailLoading />;
   }
 
   //delete contact
   const deleteContactHandler = async (id) => {
     console.log(id);
-    dispatch(removeFrequent(id))
+    dispatch(removeFrequent(id));
     setToggleDelModal(!toggleDelModal);
-    
+
     await toast.promise(deleteContact({ id, token }), {
       loading: "Working...",
       success: "Successfully deleted",
       error: "Something wrong!",
     });
-    
 
     setTimeout(() => {
       navigate("/");
@@ -78,7 +76,7 @@ const Detail = () => {
             <div className=" flex flex-col md:flex-row items-center gap-5 md:gap-10 ">
               <button
                 className=" self-start text-xl cursor-pointer"
-                onClick={() => navigate(-1)}
+                onClick={() => navigate("/")}
               >
                 <BsArrowLeft />
               </button>
@@ -87,7 +85,7 @@ const Detail = () => {
                 src="https://www.gstatic.com/identity/boq/profilepicturepicker/photo_silhouette_e02a5f5deb3ffc173119a01bc9575490.png"
                 alt=""
               />
-              <div className=" flex flex-col items-center gap-3">
+              <div className=" flex flex-col items-center md:items-start gap-3">
                 <h1 className=" text-xl font-medium text-gray-600">
                   {contact?.contact?.name}
                 </h1>

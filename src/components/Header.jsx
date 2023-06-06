@@ -10,7 +10,10 @@ import { FiLogOut } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useLogoutMutation } from "../redux/api/contactApi";
 import { removeUser } from "../redux/services/authSlice";
-import { removeAllFrequent, setSearchTerm } from "../redux/services/contactSlice";
+import {
+  removeAllFrequent,
+  setSearchTerm,
+} from "../redux/services/contactSlice";
 
 const Header = ({ togglerClick }) => {
   const inputRef = useRef(null);
@@ -37,7 +40,7 @@ const Header = ({ togglerClick }) => {
     const { data } = await logout(token);
     dispatch(removeUser());
     if (data?.success) {
-      dispatch(removeAllFrequent())
+      dispatch(removeAllFrequent());
       nav("/login");
     }
     console.log(data);
@@ -45,7 +48,7 @@ const Header = ({ togglerClick }) => {
 
   return (
     <>
-      <div className="flex items-center gap-6 py-2 sticky top-0 px-5 shadow z-50">
+      <div className="flex items-center gap-6 py-2 sticky top-0 px-5 shadow z-50 bg-white">
         <div className="w-[240px] md:w-[300px]">
           <div className="flex items-center gap-2">
             <div
@@ -122,7 +125,7 @@ const Header = ({ togglerClick }) => {
       <div
         className={`absolute ${
           userToggle ? "block" : "hidden"
-        } bg-gray-200 w-[90%] right-5 md:w-[400px] top-[110px] md:right-2 rounded-xl z-50 px-1 py-1 border-4 border-gray-200/50 shadow-xl`}
+        } bg-gray-200 w-[90%] right-5 md:w-[400px] top-[60px] md:right-2 rounded-xl z-50 px-1 py-1 border-4 border-gray-200/50 shadow-xl`}
       >
         <div className=" flex flex-col gap-1">
           <div className="flex items-center gap-5 bg-gray-50/80 p-6 rounded-t-md">

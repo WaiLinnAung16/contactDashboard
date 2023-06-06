@@ -15,6 +15,7 @@ import {
 import { AiOutlineUser } from "react-icons/ai";
 import Spinner from "../components/Spinner";
 import DeleteModal from "../components/DeleteModal";
+import ContactLoading from "../components/Skeleton/ContactLoading";
 
 const Contacts = () => {
   const token = Cookies.get("token");
@@ -38,7 +39,7 @@ const Contacts = () => {
   }, [data]);
 
   if (isLoading) {
-    return <Spinner />;
+    return <ContactLoading />;
   }
 
   if (!data?.contacts?.data.length) {

@@ -17,6 +17,7 @@ import {
 import { useSelector } from "react-redux";
 import Spinner from "../components/Spinner";
 import { BsArrowLeft } from "react-icons/bs";
+import FormLoading from "../components/Skeleton/FormLoading";
 
 const Update = () => {
   const { id } = useParams();
@@ -99,7 +100,7 @@ const Update = () => {
   console.log(formError);
 
   if (isLoading) {
-    return <Spinner />;
+    return <FormLoading />;
   }
 
   return (
