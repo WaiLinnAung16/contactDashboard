@@ -138,15 +138,15 @@ const Contacts = () => {
 
                       <span className="row">
                         {contact?.name?.length < 15
-                          ? contact.name
-                          : contact.name.slice(0, 15) + "..."}
+                          ? contact?.name
+                          : contact?.name.slice(0, 15) + "..."}
                       </span>
                     </td>
 
                     <td className="row py-3 hidden md:table-cell">
                       {contact?.email?.length < 25
-                        ? contact.email
-                        : contact.email.slice(0, 25) + "..."}
+                        ? contact?.email
+                        : contact?.email.slice(0, 25) + "..."}
                     </td>
                     <td className="row py-3 hidden md:table-cell">
                       {contact?.phone}
