@@ -43,7 +43,7 @@ const Header = ({ togglerClick }) => {
       dispatch(removeAllFrequent());
       nav("/login");
     }
-    console.log(data);
+    // console.log(data);
   };
 
   return (
@@ -69,7 +69,7 @@ const Header = ({ togglerClick }) => {
         <div className="lg:ml-10 flex justify-end items-center gap-3 md:justify-between w-full">
           <div className="px-4 py-2 bg-gray-200 rounded-lg lg:w-[75%] h-12 hidden md:w-[400px] md:block focus-within:bg-white focus-within:shadow-md focus-within:border-none focus-within:rounded-t-lg focus-within:rounded-b-none">
             <form className=" flex gap-2  items-center ">
-              <button className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-300">
+              <button type="button" className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-300">
                 <AiOutlineSearch size={20} />
               </button>
 
@@ -92,6 +92,7 @@ const Header = ({ togglerClick }) => {
             <div className={`flex gap-5 items-center `}>
               <form className="flex items-center gap-6">
                 <button
+                type="button"
                   onClick={() => setSearch((pre) => !pre)}
                   className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-300"
                 >
